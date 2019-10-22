@@ -56,12 +56,16 @@ void compactar()
     {
         int vetorFrequencia [256];
 
-        char aux = fgetc(arqEntrada);
+        for(int i = 0; i < 256; i++)
+            vetorFrequencia[i] = 0;
+
+        /* Segura que deu ruim aqui, n mexe ainda
+        char aux = getc(arqEntrada);
         while(aux != EOF)
         {
-            aux = fgetc(arqEntrada);
             vetorFrequencia[aux]++;
-        }
+            aux = getc(arqEntrada);
+        }*/
 
         rewind(arqEntrada);
 
@@ -90,8 +94,6 @@ void compactar()
         5.
         Scan text again and create new file
         using the Huffman codes.
-
-        //for()//preenche a fila de frequencia
         */
 
         fclose(arqEntrada);

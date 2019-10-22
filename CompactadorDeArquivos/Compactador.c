@@ -63,7 +63,6 @@ void compactar()
         ///Segura que deu ruim aqui, n mexe ainda
         while(aux != EOF)
         {
-            printf("%c", aux);
             vetorFrequencia[aux]++;
             aux = getc(arqEntrada);
         }
@@ -72,7 +71,8 @@ void compactar()
 
         for(int i = 0; i < 256; i++)
         {
-            printf("%d", vetorFrequencia[i]);
+            if(vetorFrequencia[i] != 0)
+                printf("%c : %d \n", i, vetorFrequencia[i]);
         }
 
         /*

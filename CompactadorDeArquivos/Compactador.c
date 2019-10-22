@@ -41,16 +41,16 @@ void compactar()
 {
     clearScreen();
 
-    char nomeArquivo[256];
+    char nomeArquivo[50];
     FILE *arqEntrada;
 
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
     fflush(stdout);
 
-    gets(&nomeArquivo);
+    scanf("%s", &nomeArquivo);
     fflush(stdin);
 
-    if(arqEntrada = fopen(nomeArquivo,"rb") == NULL)
+    if((arqEntrada = fopen(nomeArquivo, "rb")) == NULL)
         puts("Esse arquivo nao existe!");
     else
     {
@@ -59,19 +59,20 @@ void compactar()
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
 
-        /* Segura que deu ruim aqui, n mexe ainda
         char aux = getc(arqEntrada);
+        ///Segura que deu ruim aqui, n mexe ainda
         while(aux != EOF)
         {
+            printf("%c", aux);
             vetorFrequencia[aux]++;
             aux = getc(arqEntrada);
-        }*/
+        }
 
         rewind(arqEntrada);
 
-        for(int i = 0; i < 256; i++){
+        for(int i = 0; i < 256; i++)
+        {
             printf("%d", vetorFrequencia[i]);
-            printf("%c", vetorFrequencia[i]);
         }
 
         /*

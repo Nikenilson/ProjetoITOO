@@ -59,12 +59,10 @@ void compactar()
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
 
-        char aux = getc(arqEntrada);
-        ///Segura que deu ruim aqui, n mexe ainda
-        while(aux != EOF)
+        while(!feof(arqEntrada))
         {
+            char aux = getc(arqEntrada);
             vetorFrequencia[aux]++;
-            aux = getc(arqEntrada);
         }
 
         rewind(arqEntrada);
@@ -115,10 +113,8 @@ void descompactar()
 
     scanf("%s", &nomeArquivo);
     fflush(stdin);
-    strcpy(nomeArquivo, nomeArquivo);
 
-
-    if(arqEntrada = fopen(nomeArquivo,"rb") == NULL)
+    if((arqEntrada = fopen(nomeArquivo,"rb")) == NULL)
         puts("Esse arquivo nao existe!");
     else
     {

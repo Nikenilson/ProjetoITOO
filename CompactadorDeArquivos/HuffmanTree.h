@@ -1,6 +1,6 @@
 #ifndef HUFFMANTREE_H_INCLUDED
 #define HUFFMANTREE_H_INCLUDED
-#include "HuffmanNode.h"
+#include "HuffNode.h"
 
 typedef struct
 {

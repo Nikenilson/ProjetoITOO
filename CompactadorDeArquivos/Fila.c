@@ -1,15 +1,16 @@
 #include "Fila.h"
+#include "Lista.h"
 #include <stdlib.h>
 
-void enfileirar(void *dado)
+void enfileirar(Lista* lis, void *dado)
 {
-    Lista->fim->prox = novoNo(*dado, NULL);
+    lis->fim->prox = novoNo(*dado, NULL);
 }
 
-void* desenfileirar()
+void* desenfileirar(Lista *lis)
 {
-    No* aux = Lista->inicio;
-    Lista->inicio = Lista->inicio->prox;
+    No* aux = lis->inicio;
+    lis->inicio = lis->inicio->prox;
 
     return aux->info;
 }

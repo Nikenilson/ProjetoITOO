@@ -1,26 +1,34 @@
 # depslib dependency file v1.0
-1571842130 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
+1571848730 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Fila.h"
+	"Lista.h"
+	"HuffNode.h"
 
 1571838444 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
 	<stdlib.h>
 
-1571841556 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.h
-	"HuffmanNode.h"
+1571847172 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.h
+	"HuffNode.h"
 
-1571842062 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.c
+1571847224 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.c
 	"Lista.h"
-	"HuffmanNode.h"
+	"HuffNode.h"
 	<stdlib.h>
 
-1571843123 c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.h
+1571845274 c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.h
 
-1571843171 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmannode.h
+1571845048 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmannode.h
 
-1571840512 c:\users\u18180\github\projetoitoo\compactadordearquivos\fila.h
+1571846917 c:\users\u18180\github\projetoitoo\compactadordearquivos\fila.h
 	"Lista.h"
+
+1571845245 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\huffnode.c
+	<stdlib.h>
+	"HuffNode.h"
+
+1571843171 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffnode.h
 

@@ -1,4 +1,5 @@
-#include "HuffmanNode.h"
+#include <stdlib.h>
+#include "HuffNode.h"
 
 HuffNode* novoHuffNode (char c, int f)
 {

@@ -2,12 +2,12 @@
 #define FILA_H_INCLUDED
 #include "Lista.h"
 
-extern void enfileirar(void *dado);
-extern void* desenfileirar();
-
 typedef struct
 {
-    Lista lis;
+    Lista *lis;
 } Fila;
+
+extern void enfileirar(Lista *lis, void *dado);
+extern void* desenfileirar(Lista *lis);
 
 #endif // FILA_H_INCLUDED

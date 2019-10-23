@@ -4,7 +4,7 @@
 
 #include "Fila.h"
 #include "Lista.h"
-#include "HuffmanNode.h"
+#include "HuffNode.h"
 
 int main()
 {
@@ -41,9 +41,9 @@ int main()
     return 0;
 }
 
-int comparaHuffNode (const void * a, const void * b)
+int comparaHuffNode (void * a, void * b)
 {
-   return ( *(HuffNode*)a->frequencia - *(HuffNode*)b->frequencia );
+   return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
 }
 
 void compactar()
@@ -82,13 +82,14 @@ void compactar()
         for(int i = 0; i < 256; i++)
         {
             if(vetorFrequencia[i] != 0)
-                printf("%c : %d \n", i, vetorFrequencia[i]);
+                insiraEmOrdem(fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
-        for(int i = 0; i < 256; i++)
+        while(fila.lis->inicio != NULL)
         {
-            if(vetorFrequencia[i] != 0)
-                inserirEmOrdem(fila->lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
+            HuffNode *aux = (HuffNode*) fila.lis->inicio->info;
+            printf("[Funcionou] %c : %d\n", aux->caracter, aux->frequencia);
+            fila.lis->inicio = fila.lis->inicio->prox;
         }
 
         /*

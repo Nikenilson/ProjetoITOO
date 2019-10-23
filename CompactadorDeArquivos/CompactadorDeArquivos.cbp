@@ -41,13 +41,10 @@
 		<Unit filename="Fila.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="HuffmanNode.c">
+		<Unit filename="HuffNode.c">
 			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="HuffmanNode.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="HuffNode.h" />
 		<Unit filename="HuffmanTree.c">
 			<Option compilerVar="CC" />
 		</Unit>

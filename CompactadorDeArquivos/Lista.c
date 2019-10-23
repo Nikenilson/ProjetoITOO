@@ -1,5 +1,5 @@
 #include "Lista.h"
-#include "HuffmanNode.h"
+#include "HuffNode.h"
 #include <stdlib.h>
 
 No* novoNo (void *inf, No *prx)
@@ -23,7 +23,7 @@ void insiraNoInicio (Lista *lis, void *inf)
         lis->fim=lis->inicio;
 }
 
-void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(const void *, const void*))
+void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(void *, void*))
 {
     No* atual;
     No* no = novoNo(inf, NULL);

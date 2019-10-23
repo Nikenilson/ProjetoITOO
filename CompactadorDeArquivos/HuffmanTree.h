@@ -1,12 +1,6 @@
 #ifndef HUFFMANTREE_H_INCLUDED
 #define HUFFMANTREE_H_INCLUDED
-
-typedef struct HuffNode
-{
-	char caracter;
-	int frequencia;
-	struct HuffNode *esquerda, *direita;
-} HuffNode;
+#include "HuffmanNode.h"
 
 typedef struct
 {

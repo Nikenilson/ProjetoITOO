@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Fila.h"
+#include "Lista.h"
+#include "HuffmanNode.h"
+
 int main()
 {
     int escolha;
@@ -37,6 +41,11 @@ int main()
     return 0;
 }
 
+int comparaHuffNode (const void * a, const void * b)
+{
+   return ( *(HuffNode*)a->frequencia - *(HuffNode*)b->frequencia );
+}
+
 void compactar()
 {
     clearScreen();
@@ -55,6 +64,8 @@ void compactar()
     else
     {
         int vetorFrequencia [256];
+        int qtdChars = 0;
+        Fila fila;
 
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
@@ -63,6 +74,7 @@ void compactar()
         {
             char aux = getc(arqEntrada);
             vetorFrequencia[aux]++;
+            qtdChars++;
         }
 
         rewind(arqEntrada);
@@ -71,6 +83,12 @@ void compactar()
         {
             if(vetorFrequencia[i] != 0)
                 printf("%c : %d \n", i, vetorFrequencia[i]);
+        }
+
+        for(int i = 0; i < 256; i++)
+        {
+            if(vetorFrequencia[i] != 0)
+                inserirEmOrdem(fila->lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
         /*

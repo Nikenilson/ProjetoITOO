@@ -5,4 +5,9 @@
 extern void enfileirar(void *dado);
 extern void* desenfileirar();
 
+typedef struct
+{
+    Lista lis;
+} Fila;
+
 #endif // FILA_H_INCLUDED

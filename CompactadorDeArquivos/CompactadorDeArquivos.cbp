@@ -34,6 +34,28 @@
 		<Unit filename="Compactador.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Fila.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Fila.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="HuffmanNode.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="HuffmanNode.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="HuffmanTree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="HuffmanTree.h" />
+		<Unit filename="Lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Lista.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

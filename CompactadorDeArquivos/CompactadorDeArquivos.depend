@@ -32,3 +32,40 @@
 
 1571843171 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffnode.h
 
+1571880075 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffnode.c
+	<stdlib.h>
+	"HuffNode.h"
+
+1571881265 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffnode.h
+
+1571884947 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.c
+	"HuffmanTree.h"
+	<stdlib.h>
+
+1571884104 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.h
+	"HuffNode.h"
+
+1571882340 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\lista.c
+	"Lista.h"
+	"HuffNode.h"
+	<stdlib.h>
+
+1571880957 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\lista.h
+
+1571885018 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\compactador.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Fila.h"
+	"Lista.h"
+	"HuffNode.h"
+	"HuffmanTree.h"
+
+1571882510 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\fila.h
+	"Lista.h"
+
+1571884637 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\fila.c
+	"Fila.h"
+	"Lista.h"
+	<stdlib.h>
+

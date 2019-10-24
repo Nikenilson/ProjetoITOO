@@ -5,6 +5,7 @@
 #include "Fila.h"
 #include "Lista.h"
 #include "HuffNode.h"
+#include "HuffmanTree.h"
 
 int main()
 {
@@ -66,6 +67,7 @@ void compactar()
         int vetorFrequencia [256];
         int qtdChars = 0;
         Fila fila;
+        inicieLista(fila.lis);
 
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
@@ -85,12 +87,69 @@ void compactar()
                 insiraEmOrdem(fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
-        while(fila.lis->inicio != NULL)
+        /*while(fila.lis->inicio != NULL)
         {
             HuffNode *aux = (HuffNode*) fila.lis->inicio->info;
             printf("[Funcionou] %c : %d\n", aux->caracter, aux->frequencia);
             fila.lis->inicio = fila.lis->inicio->prox;
+        }*/
+
+        while(fila.lis->qtd >= 2)
+        {
+            HuffNode* novo = novoHuffNode(-1,0);
+
+            novo->esquerda = desenfileirar(fila.lis);
+            novo->direita  = desenfileirar(fila.lis);
+
+            novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
+
+            insiraEmOrdem(fila.lis, novo, comparaHuffNode);
+            puts("alula");
+
+            /*
+            Create new node
+
+            Dequeue node and make it left subtree
+
+            Dequeue next node and make it right
+            subtree
+
+            Frequency of new node equals sum of
+            frequency of left and right children
+
+            Enqueue new node back into queue*/
+
         }
+        puts("alula 1");
+
+        char codigo[8];
+        int cont = 0;
+        int contS = 0;
+
+        HuffmanTree* arvore;
+        inicieArvore(arvore);
+
+        char codigos[qtdChars][8];
+
+        puts("alula");
+
+        arvore->raiz = (HuffNode*) desenfileirar(fila.lis);
+
+        puts("alula AC (Antes do C)");
+
+        percorreArvore(arvore->raiz, codigo, cont, codigos, contS);
+
+        puts("alula DC");
+
+        for(int i = 0; i < qtdChars; i++)
+        {
+            for(int iDois = 0; iDois < 8; iDois++)
+            printf("%d", codigos[i][iDois]);
+
+            printf("\n");
+        }
+
+        puts("alula");
 
         /*
         1.

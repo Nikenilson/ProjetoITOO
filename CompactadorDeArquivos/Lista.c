@@ -14,6 +14,7 @@ void inicieLista (Lista *lis)
 {
     lis->inicio=NULL;
     (*lis).fim =NULL;
+    lis->qtd = 0;
 }
 
 void insiraNoInicio (Lista *lis, void *inf)
@@ -21,6 +22,7 @@ void insiraNoInicio (Lista *lis, void *inf)
     lis->inicio=novoNo(inf,lis->inicio);
     if (lis->fim==NULL)
         lis->fim=lis->inicio;
+    lis->qtd++;
 }
 
 void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(void *, void*))
@@ -44,4 +46,5 @@ void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(void *, void*))
         no->prox = atual->prox;
         atual->prox = no;
     }
+    lis->qtd++;
 }

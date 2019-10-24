@@ -3,7 +3,7 @@
 
 typedef struct HuffNode
 {
-	char caracter;
+	int caracter;
 	int frequencia;
 	struct HuffNode *esquerda, *direita;
 } HuffNode;

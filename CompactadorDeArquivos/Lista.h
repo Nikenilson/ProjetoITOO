@@ -10,6 +10,7 @@ typedef struct No
 typedef struct
 {
     No *inicio, *fim;
+    int qtd;
 }
 Lista;
 

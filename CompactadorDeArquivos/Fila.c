@@ -15,3 +15,8 @@ void* desenfileirar(Lista *lis)
 
     return aux->info;
 }
+
+void inicieFila(Fila *fila)
+{
+    inicieLista(&fila->lis);
+}

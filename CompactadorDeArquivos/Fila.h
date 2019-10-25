@@ -4,10 +4,11 @@
 
 typedef struct
 {
-    Lista *lis;
+    Lista lis;
 } Fila;
 
 extern void  enfileirar(Lista *lis, void *dado);
 extern void* desenfileirar(Lista *lis);
+extern void  inicieFila(Fila *fila);
 
 #endif // FILA_H_INCLUDED

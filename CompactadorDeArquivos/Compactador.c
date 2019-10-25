@@ -6,6 +6,7 @@
 #include "Lista.h"
 #include "HuffNode.h"
 #include "HuffmanTree.h"
+#include "CharCompacto.h"
 
 int main()
 {
@@ -64,28 +65,34 @@ void compactar()
         puts("Esse arquivo nao existe!");
     else
     {
+        puts("a");
         int vetorFrequencia [256];
         int qtdChars = 0;
         Fila fila;
-        inicieLista(fila.lis);
+        inicieFila(&fila);
 
+        puts("a");
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
 
+            puts("a");
         while(!feof(arqEntrada))
         {
             char aux = getc(arqEntrada);
             vetorFrequencia[aux]++;
             qtdChars++;
         }
+        puts("a");
 
         rewind(arqEntrada);
 
+        puts("a");
         for(int i = 0; i < 256; i++)
         {
             if(vetorFrequencia[i] != 0)
-                insiraEmOrdem(fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
+                insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
+        puts("a");
 
         /*while(fila.lis->inicio != NULL)
         {
@@ -94,16 +101,17 @@ void compactar()
             fila.lis->inicio = fila.lis->inicio->prox;
         }*/
 
-        while(fila.lis->qtd >= 2)
+        puts("a");
+        while(fila.lis.qtd >= 2)
         {
             HuffNode* novo = novoHuffNode(-1,0);
 
-            novo->esquerda = desenfileirar(fila.lis);
-            novo->direita  = desenfileirar(fila.lis);
+            novo->esquerda = desenfileirar(&fila.lis);
+            novo->direita  = desenfileirar(&fila.lis);
 
             novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
 
-            insiraEmOrdem(fila.lis, novo, comparaHuffNode);
+            insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
             puts("alula");
 
             /*
@@ -122,34 +130,33 @@ void compactar()
         }
         puts("alula 1");
 
-        char codigo[8];
+        char codigo[9];
         int cont = 0;
-        int contS = 0;
 
-        HuffmanTree* arvore;
-        inicieArvore(arvore);
-
-        char codigos[qtdChars][8];
+        HuffmanTree *arvore;
+        inicieArvore(&arvore);
 
         puts("alula");
 
-        arvore->raiz = (HuffNode*) desenfileirar(fila.lis);
+        HuffNode *auxHuff = (HuffNode*) desenfileirar(&fila.lis);
+        inserirNaRaizNula(&arvore,auxHuff);
 
         puts("alula AC (Antes do C)");
 
-        percorreArvore(arvore->raiz, codigo, cont, codigos, contS);
+        Lista *lista;
+        inicieLista(&lista);
+        percorreArvore(auxHuff, codigo, cont, &lista);
 
-        puts("alula DC");
 
-        for(int i = 0; i < qtdChars; i++)
+        No* atual = novoNo(NULL, lista->inicio);
+        while(atual->prox != NULL)
         {
-            for(int iDois = 0; iDois < 8; iDois++)
-            printf("%d", codigos[i][iDois]);
-
-            printf("\n");
+            atual = atual->prox;
+            CharCompacto* aux = atual->info;
+            //printf("%c%s",aux->character, aux->codigo);
         }
 
-        puts("alula");
+        puts("alula DC");
 
         /*
         1.

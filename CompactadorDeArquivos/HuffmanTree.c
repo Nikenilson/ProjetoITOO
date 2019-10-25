@@ -1,4 +1,7 @@
 #include "HuffmanTree.h"
+#include "CharCompacto.h"
+#include "Lista.h"
+
 #include <stdlib.h>
 
 void inicieArvore(HuffmanTree *arvore)
@@ -6,25 +9,28 @@ void inicieArvore(HuffmanTree *arvore)
     arvore->raiz = NULL;
 }
 
-//naum ta certu
-void percorreArvore(HuffNode *atual, char codigo[], int cont, char **codigos, int contS)
+void percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista)
 {
     if(atual != NULL)
     {
-        puts("lula");
-        if(atual->esquerda != NULL|| atual->esquerda != NULL)
+        printf("%s","lula");
+        if(atual->esquerda != NULL && atual->esquerda != NULL)
         {
             codigo[cont] = '0';
-            percorreArvore(atual->esquerda, codigo, cont + 1, codigos, contS);
+            percorreArvore(atual->esquerda, codigo, cont + 1, lista);
             codigo[cont] = '1';
-            percorreArvore(atual->direita, codigo, cont + 1, codigos, contS );
+            percorreArvore(atual->direita, codigo, cont + 1, lista);
             codigo[cont] = NULL;
             cont--;
         }
         else
-            for(int i = 0; i < 8; i++)
-                codigos[contS++][i] = codigo[i];
-
+            insiraNoInicio(lista, novoCharCompacto(atual->caracter, codigo));
 
     }
+}
+
+void inserirNaRaizNula(HuffmanTree *arvore, HuffNode *x)
+{
+    if(arvore->raiz == NULL)
+        arvore->raiz = x;
 }

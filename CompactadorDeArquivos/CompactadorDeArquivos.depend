@@ -85,7 +85,7 @@
 	"HuffNode.h"
 	<stdlib.h>
 
-1572350159 c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\lista.h
+1572358905 c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\lista.h
 
 1572351147 source:c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
@@ -99,7 +99,7 @@
 
 1572351919 c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\charcompacto.h
 
-1572357311 source:c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\compactador.c
+1572358894 source:c:\users\u18169\documents\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

@@ -5,7 +5,7 @@ typedef struct No
 {
     void      *info;
     struct No *prox;
-}
+}No;
 
 typedef struct
 {

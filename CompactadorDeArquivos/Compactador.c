@@ -206,7 +206,7 @@ void descompactar()
     scanf("%s", &nomeArquivo);
     fflush(stdin);
 
-    if((arqSaida = fopen(nomeArquivo2,"wb")) == NULL)
+    if((arqEntrada = fopen(nomeArquivo,"wb")) == NULL)
         puts("Esse arquivo não pode ser criado!");
     else
     {

@@ -7,7 +7,17 @@ CharCompacto* novoCharCompacto (char c, char cod[])
 {
     CharCompacto* ret = (CharCompacto*) malloc(sizeof(CharCompacto));
     ret->character = c;
-    printf("%s",cod);
     strcpy(ret->codigo, cod);
     return ret;
 }
+
+char getCaracter(CharCompacto *c)
+{
+    return c->character;
+}
+
+char getCodigo(CharCompacto *c)
+{
+    return c->codigo;
+}
+

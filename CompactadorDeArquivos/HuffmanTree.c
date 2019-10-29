@@ -13,14 +13,13 @@ void percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista)
 {
     if(atual != NULL)
     {
-        printf("%s","lula");
-        if(atual->esquerda != NULL && atual->esquerda != NULL)
+        if(atual->esquerda != NULL && atual->direita != NULL)
         {
             codigo[cont] = '0';
             percorreArvore(atual->esquerda, codigo, cont + 1, lista);
             codigo[cont] = '1';
             percorreArvore(atual->direita, codigo, cont + 1, lista);
-            codigo[cont] = NULL;
+            codigo[cont] = '2'; //Teste clan calma
             cont--;
         }
         else

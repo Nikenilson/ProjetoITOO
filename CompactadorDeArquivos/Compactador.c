@@ -65,34 +65,28 @@ void compactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        puts("a");
         int vetorFrequencia [256];
         int qtdChars = 0;
         Fila fila;
         inicieFila(&fila);
 
-        puts("a");
         for(int i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
 
-            puts("a");
         while(!feof(arqEntrada))
         {
             char aux = getc(arqEntrada);
             vetorFrequencia[aux]++;
             qtdChars++;
         }
-        puts("a");
 
         rewind(arqEntrada);
 
-        puts("a");
         for(int i = 0; i < 256; i++)
         {
             if(vetorFrequencia[i] != 0)
                 insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
-        puts("a");
 
         /*while(fila.lis->inicio != NULL)
         {
@@ -101,7 +95,6 @@ void compactar()
             fila.lis->inicio = fila.lis->inicio->prox;
         }*/
 
-        puts("a");
         while(fila.lis.qtd >= 2)
         {
             HuffNode* novo = novoHuffNode(-1,0);
@@ -112,7 +105,6 @@ void compactar()
             novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
 
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
-            puts("alula");
 
             /*
             Create new node
@@ -136,27 +128,26 @@ void compactar()
         HuffmanTree *arvore;
         inicieArvore(&arvore);
 
-        puts("alula");
 
         HuffNode *auxHuff = (HuffNode*) desenfileirar(&fila.lis);
         inserirNaRaizNula(&arvore,auxHuff);
 
-        puts("alula AC (Antes do C)");
+        puts("alula 2");
 
         Lista *lista;
         inicieLista(&lista);
         percorreArvore(auxHuff, codigo, cont, &lista);
 
 
-        No* atual = novoNo(NULL, lista->inicio);
+        No* atual = novoNo(lista->inicio->info, lista->inicio);
         while(atual->prox != NULL)
         {
             atual = atual->prox;
-            CharCompacto* aux = atual->info;
-            //printf("%c%s",aux->character, aux->codigo);
+            CharCompacto *aux = atual->info;
+            /*printf("%c%s",aux->character, aux->codigo);*/
         }
 
-        puts("alula DC");
+        puts("alula 3");
 
         /*
         1.

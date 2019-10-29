@@ -54,8 +54,6 @@ void compactar()
 
     char nomeArquivo[50];
     FILE *arqEntrada;
-    char nomeArquivo2[50];
-    FILE *arqSaida;
 
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
     fflush(stdout);
@@ -177,6 +175,9 @@ void compactar()
         using the Huffman codes.
         */
 
+        /*
+        char nomeArquivo2[50];
+        FILE *arqSaida;
         if((arqSaida = fopen(nomeArquivo2, "wb")) == NULL)
         puts("Esse arquivo nao existe!");
         else
@@ -186,7 +187,7 @@ void compactar()
 
         fclose(arqSaida);
         fclose(arqEntrada);
-
+        */
     }
 
     system("PAUSE");

@@ -134,3 +134,51 @@
 	"Lista.h"
 	<stdlib.h>
 
+1572366384 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\charcompacto.c
+	<stdlib.h>
+	<string.h>
+	"CharCompacto.h"
+
+1572366384 c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\charcompacto.h
+
+1572366384 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\fila.c
+	"Fila.h"
+	"Lista.h"
+	<stdlib.h>
+
+1572366384 c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\fila.h
+	"Lista.h"
+
+1572366384 c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\lista.h
+
+1572367905 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\huffmantree.c
+	"HuffmanTree.h"
+	"CharCompacto.h"
+	"Lista.h"
+	<stdlib.h>
+
+1572366384 c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\huffmantree.h
+	"HuffNode.h"
+	"Lista.h"
+
+1572366384 c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\huffnode.h
+
+1572366384 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\huffnode.c
+	<stdlib.h>
+	"HuffNode.h"
+
+1572366384 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\lista.c
+	"Lista.h"
+	"HuffNode.h"
+	<stdlib.h>
+
+1572367517 source:c:\users\u18180\documents\github\projetoitoo\compactadordearquivos\compactador.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Fila.h"
+	"Lista.h"
+	"HuffNode.h"
+	"HuffmanTree.h"
+	"CharCompacto.h"
+

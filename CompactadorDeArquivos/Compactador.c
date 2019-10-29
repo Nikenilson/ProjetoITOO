@@ -143,12 +143,12 @@ void compactar()
         percorreArvore(auxHuff, codigo, cont, &lista);
 
 
-        No* atual = novoNo(lista->inicio->info, lista->inicio);
-        while(atual->prox != NULL)
+        No* atual = lista->inicio;
+        while(atual != NULL)
         {
-            atual = atual->prox;
-            CharCompacto *aux = atual->info;
+            CharCompacto *aux = (CharCompacto*)atual->info;
             printf("%c%s",aux->character, aux->codigo);
+            atual = atual->prox;
         }
 
         puts("alula 3");

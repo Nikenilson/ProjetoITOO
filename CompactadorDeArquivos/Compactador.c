@@ -54,6 +54,8 @@ void compactar()
 
     char nomeArquivo[50];
     FILE *arqEntrada;
+    char nomeArquivo2[50];
+    FILE *arqSaida;
 
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
     fflush(stdout);
@@ -123,6 +125,10 @@ void compactar()
         puts("alula 1");
 
         char codigo[9];
+        for(int i = 0; i<10; i++)
+        {
+            codigo[i] = NULL;
+        }
         int cont = 0;
 
         HuffmanTree *arvore;
@@ -144,7 +150,7 @@ void compactar()
         {
             atual = atual->prox;
             CharCompacto *aux = atual->info;
-            /*printf("%c%s",aux->character, aux->codigo);*/
+            //printf("%c%s",aux->character, aux->codigo);
         }
 
         puts("alula 3");
@@ -171,7 +177,16 @@ void compactar()
         using the Huffman codes.
         */
 
+        if((arqSaida = fopen(nomeArquivo2, "wb")) == NULL)
+        puts("Esse arquivo nao existe!");
+        else
+        {
+
+        }
+
+        fclose(arqSaida);
         fclose(arqEntrada);
+
     }
 
     system("PAUSE");
@@ -190,8 +205,8 @@ void descompactar()
     scanf("%s", &nomeArquivo);
     fflush(stdin);
 
-    if((arqEntrada = fopen(nomeArquivo,"rb")) == NULL)
-        puts("Esse arquivo nao existe!");
+    if((arqSaida = fopen(nomeArquivo2,"wb")) == NULL)
+        puts("Esse arquivo não pode ser criado!");
     else
     {
 

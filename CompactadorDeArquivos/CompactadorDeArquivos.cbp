@@ -31,16 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="CharCompacto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="CharCompacto.h" />
 		<Unit filename="Compactador.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Fila.c">
 			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="Fila.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="Fila.h" />
 		<Unit filename="HuffNode.c">
 			<Option compilerVar="CC" />
 		</Unit>

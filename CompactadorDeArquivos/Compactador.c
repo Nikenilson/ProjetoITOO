@@ -148,7 +148,7 @@ void compactar()
         {
             atual = atual->prox;
             CharCompacto *aux = atual->info;
-            //printf("%c%s",aux->character, aux->codigo);
+            printf("%c%s",aux->character, aux->codigo);
         }
 
         puts("alula 3");

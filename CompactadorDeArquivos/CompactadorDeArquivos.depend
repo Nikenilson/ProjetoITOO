@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1571921999 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
+1572357677 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -7,13 +7,17 @@
 	"Lista.h"
 	"HuffNode.h"
 	"HuffmanTree.h"
+	"CharCompacto.h"
 
-1571921999 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.c
+1572357517 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
+	"CharCompacto.h"
+	"Lista.h"
 	<stdlib.h>
 
-1571921999 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.h
+1572357517 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmantree.h
 	"HuffNode.h"
+	"Lista.h"
 
 1571921999 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.c
 	"Lista.h"
@@ -24,7 +28,7 @@
 
 1571845048 c:\users\u18180\github\projetoitoo\compactadordearquivos\huffmannode.h
 
-1571921999 c:\users\u18180\github\projetoitoo\compactadordearquivos\fila.h
+1572357517 c:\users\u18180\github\projetoitoo\compactadordearquivos\fila.h
 	"Lista.h"
 
 1571845245 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\huffnode.c
@@ -117,4 +121,16 @@
 	<stdlib.h>
 	<string.h>
 	"CharCompacto.h"
+
+1572357517 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\charcompacto.c
+	<stdlib.h>
+	<string.h>
+	"CharCompacto.h"
+
+1572357517 c:\users\u18180\github\projetoitoo\compactadordearquivos\charcompacto.h
+
+1572357517 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\fila.c
+	"Fila.h"
+	"Lista.h"
+	<stdlib.h>
 

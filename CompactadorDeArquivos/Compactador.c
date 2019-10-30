@@ -109,10 +109,6 @@ void compactar()
 
             novo->esquerda = desenfileirar(&fila.lis);
             novo->direita  = desenfileirar(&fila.lis);
-
-            printf("%c : %d\n", novo->esquerda->caracter, novo->esquerda->frequencia);
-            printf("%c : %d\n", novo->direita->caracter, novo->direita->frequencia);
-
             novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
 
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);

@@ -30,7 +30,7 @@ void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(void *, void*))
     No* atual;
     No* no = novoNo(inf, NULL);
     // Special case for the head end
-    if (lis->inicio == NULL || compar(lis->inicio->info, no->info) >= 0)
+    if (lis->inicio == NULL || compar(lis->inicio->info, no->info) > 0)
     {
         no->prox = lis->inicio;
         lis->inicio = no;
@@ -39,7 +39,7 @@ void insiraEmOrdem (Lista *lis, void *inf, int (*compar)(void *, void*))
     {
         // Locate the node before the point of insertion
         atual = lis->inicio;
-        while (atual->prox != NULL && compar(atual->prox->info, no->info) < 0)
+        while (atual->prox != NULL && compar(atual->prox->info, no->info) < 1)
         {
             atual = atual->prox;
         }

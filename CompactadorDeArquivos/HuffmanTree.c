@@ -9,24 +9,24 @@ void inicieArvore(HuffmanTree *arvore)
     arvore->raiz = NULL;
 }
 
-void percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista)
+void percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (*compar)(void *, void*))
 {
     if(atual != NULL)
     {
         if(atual->esquerda != NULL)
         {
           codigo[cont] = '0';
-          percorreArvore(atual->esquerda, codigo, cont + 1, lista);
+          percorreArvore(atual->esquerda, codigo, cont + 1, lista, compar);
         }
 
         if(atual->esquerda == NULL && atual->direita == NULL)
         {
-            insiraNoInicio(lista, novoCharCompacto(atual->caracter, codigo));
+            insiraEmOrdem(lista, novoCharCompacto(atual->caracter, codigo), compar);
         }
         if(atual->direita != NULL)
         {
           codigo[cont] = '1';
-            percorreArvore(atual->direita, codigo, cont + 1, lista);
+            percorreArvore(atual->direita, codigo, cont + 1, lista, compar);
         }
 
         /*if(atual->esquerda != NULL && atual->direita != NULL)

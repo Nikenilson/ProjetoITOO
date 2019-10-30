@@ -67,7 +67,15 @@ void compactar()
     {
         int vetorFrequencia [256];
         int qtdChars = 0;
+        int cont = 0;
+        char codigo[9];
+
         Fila fila;
+        HuffmanTree *arvore;
+        HuffNode *auxHuff;
+        Lista *lista;
+        No* atual;
+
         inicieFila(&fila);
 
         for(int i = 0; i < 256; i++)
@@ -88,11 +96,11 @@ void compactar()
                 insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
-        /*while(fila.lis->inicio != NULL)
+        /*while(fila.lis.inicio != NULL)
         {
-            HuffNode *aux = (HuffNode*) fila.lis->inicio->info;
-            printf("[Funcionou] %c : %d\n", aux->caracter, aux->frequencia);
-            fila.lis->inicio = fila.lis->inicio->prox;
+            HuffNode *aux = (HuffNode*) fila.lis.inicio->info;
+            printf("%c : %d\n", aux->caracter, aux->frequencia);
+            fila.lis.inicio = fila.lis.inicio->prox;
         }*/
 
         while(fila.lis.qtd >= 2)
@@ -102,12 +110,14 @@ void compactar()
             novo->esquerda = desenfileirar(&fila.lis);
             novo->direita  = desenfileirar(&fila.lis);
 
+            printf("%c : %d\n", novo->esquerda->caracter, novo->esquerda->frequencia);
+            printf("%c : %d\n", novo->direita->caracter, novo->direita->frequencia);
+
             novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
 
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
 
-            /*
-            Create new node
+            /*Create new node
 
             Dequeue node and make it left subtree
 
@@ -122,28 +132,28 @@ void compactar()
         }
         puts("alula 1");
 
-        char codigo[9];
         for(int i = 0; i<10; i++)
         {
             codigo[i] = NULL;
         }
-        int cont = 0;
 
-        HuffmanTree *arvore;
+
         inicieArvore(&arvore);
 
+        auxHuff = (HuffNode*) desenfileirar(&fila.lis);
+        //arvore->raiz = auxHuff;
 
-        HuffNode *auxHuff = (HuffNode*) desenfileirar(&fila.lis);
-        inserirNaRaizNula(&arvore,auxHuff);
+        -  //clebinhu
+
+        p(auxHuff);
 
         puts("alula 2");
 
-        Lista *lista;
         inicieLista(&lista);
-        percorreArvore(auxHuff, codigo, cont, &lista);
+        percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
 
 
-        No* atual = lista->inicio;
+        atual = lista->inicio;
         while(atual != NULL)
         {
             CharCompacto *aux = (CharCompacto*)atual->info;
@@ -221,4 +231,14 @@ void descompactar()
 void clearScreen()
 {
     system("@cls||clear");
+}
+
+void p(HuffNode* avere)
+{
+    if(avere != NULL)
+    {
+        p(avere->esquerda);
+        printf("%c : %d\n", avere->caracter, avere->frequencia);
+        p(avere->direita);
+    }
 }

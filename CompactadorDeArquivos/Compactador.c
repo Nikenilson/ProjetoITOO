@@ -53,7 +53,7 @@ void compactar()
     clearScreen();
 
     char nomeArquivo[50];
-    char *nomeArquivoAlula;
+    char nomeArquivoAlula[50];
     FILE *arqEntrada;
 
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
@@ -164,22 +164,21 @@ void compactar()
         using the Huffman codes.
         */
 
-        strcpy(nomeArquivo,nomeArquivo);
-        nomeArquivoAlula = strtok(nomeArquivo, '.');
-        strcat(nomeArquivoAlula, ".alula");
+        strcpy(nomeArquivoAlula, &nomeArquivo);
+        for(int j = 50; nomeArquivoAlula[j] != '.'; j--)
+            nomeArquivoAlula[j] = '\0';
+        strcat(nomeArquivoAlula, "alula");
 
         FILE *arqSaida;
-        if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
+        if((arqSaida = fopen(nomeArquivoAlula, "wb")) == NULL)
             puts("Esse arquivo nao pode ser criado!");
         else
         {
-            puts(nomeArquivo);
-
+            puts(nomeArquivoAlula);
         }
 
         fclose(arqSaida);
         fclose(arqEntrada);
-
     }
 
     system("PAUSE");

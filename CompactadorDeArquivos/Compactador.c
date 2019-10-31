@@ -87,22 +87,16 @@ void compactar()
             vetorFrequencia[aux]++;
             qtdChars++;
         }
-
         rewind(arqEntrada);
 
+        /// loop para inserir huffnode na fila de prioridade
         for(int i = 0; i < 256; i++)
         {
             if(vetorFrequencia[i] != 0)
                 insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
-        /*while(fila.lis.inicio != NULL)
-        {
-            HuffNode *aux = (HuffNode*) fila.lis.inicio->info;
-            printf("%c : %d\n", aux->caracter, aux->frequencia);
-            fila.lis.inicio = fila.lis.inicio->prox;
-        }*/
-
+        /// loop para montar a huffman tree
         while(fila.lis.qtd >= 2)
         {
             HuffNode* novo = novoHuffNode(-1,0);
@@ -128,32 +122,23 @@ void compactar()
         }
         puts("alula 1");
 
-        for(int i = 0; i<10; i++)
+        for(int i = 0; i < 10; i++)
         {
             codigo[i] = NULL;
         }
 
-
         inicieArvore(&arvore);
-
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
-        //arvore->raiz = auxHuff;
-
-        -  //clebinhu
-
-        p(auxHuff);
 
         puts("alula 2");
 
         inicieLista(&lista);
-        percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
+        atual = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
 
-
-        atual = lista->inicio;
         while(atual != NULL)
         {
             CharCompacto *aux = (CharCompacto*)atual->info;
-            printf("%c%s",aux->character, aux->codigo);
+            printf("%c : %s\n",aux->character, aux->codigo);
             atual = atual->prox;
         }
 
@@ -227,14 +212,4 @@ void descompactar()
 void clearScreen()
 {
     system("@cls||clear");
-}
-
-void p(HuffNode* avere)
-{
-    if(avere != NULL)
-    {
-        p(avere->esquerda);
-        printf("%c : %d\n", avere->caracter, avere->frequencia);
-        p(avere->direita);
-    }
 }

@@ -9,38 +9,30 @@ void inicieArvore(HuffmanTree *arvore)
     arvore->raiz = NULL;
 }
 
-void percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (*compar)(void *, void*))
+No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (*compar)(void *, void*))
 {
     if(atual != NULL)
     {
         if(atual->esquerda != NULL)
         {
-          codigo[cont] = '0';
-          percorreArvore(atual->esquerda, codigo, cont + 1, lista, compar);
+            codigo[cont] = '0';
+            percorreArvore(atual->esquerda, codigo, cont + 1, lista, compar);
         }
 
         if(atual->esquerda == NULL && atual->direita == NULL)
         {
             insiraEmOrdem(lista, novoCharCompacto(atual->caracter, codigo), compar);
-        }
-        if(atual->direita != NULL)
-        {
-          codigo[cont] = '1';
-            percorreArvore(atual->direita, codigo, cont + 1, lista, compar);
+            //codigo[0] = '\0';
         }
 
-        /*if(atual->esquerda != NULL && atual->direita != NULL)
+        if(atual->direita != NULL)
         {
-            codigo[cont] = '0';
-            percorreArvore(atual->esquerda, codigo, cont + 1, lista);
             codigo[cont] = '1';
-            percorreArvore(atual->direita, codigo, cont + 1, lista);
-            codigo[cont] = '2'; //Teste clan calma
-            cont--;
+            percorreArvore(atual->direita, codigo, cont + 1, lista, compar);
         }
-        else
-            insiraNoInicio(lista, novoCharCompacto(atual->caracter, codigo));*/
     }
+
+    return lista->inicio;
 }
 
 void inserirNaRaizNula(HuffmanTree *arvore, HuffNode *x)

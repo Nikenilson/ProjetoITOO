@@ -89,14 +89,12 @@ void compactar()
         }
         rewind(arqEntrada);
 
-        /// loop para inserir huffnode na fila de prioridade
         for(int i = 0; i < 256; i++)
         {
             if(vetorFrequencia[i] != 0)
                 insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
         }
 
-        /// loop para montar a huffman tree
         while(fila.lis.qtd >= 2)
         {
             HuffNode* novo = novoHuffNode(-1,0);
@@ -118,7 +116,6 @@ void compactar()
             frequency of left and right children
 
             Enqueue new node back into queue*/
-
         }
         puts("alula 1");
 

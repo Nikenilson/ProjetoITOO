@@ -132,6 +132,7 @@ void compactar()
 
         inicieLista(&lista);
         atual = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
+        lista->inicio = atual;
 
         while(atual != NULL)
         {
@@ -174,9 +175,128 @@ void compactar()
             puts("Esse arquivo nao pode ser criado!");
         else
         {
-            puts(nomeArquivoAlula);
-        }
+            while(!feof(arqEntrada))
+            {
+                char aux1[9];
+                char aux2[9];
 
+                int auxChar = 0;
+                if((auxChar = getc(arqEntrada)) >= 0 )
+                {
+                    No* auxiliar = lista->inicio;
+                    while(auxiliar != NULL)
+                    {
+                        CharCompacto *au = (CharCompacto*)auxiliar->info;
+                        if(au->character == auxChar)
+                        {
+                            char sobra[9];
+                            char temSobra = 0;
+
+                            if(strlen(aux1) + strlen(au->codigo) < 10)
+                            {
+                                if(!temSobra)
+                                {
+                                    char codigoAU[9];
+                                    strcpy(codigoAU,au->codigo);
+                                    strcat(aux1,codigoAU);
+                                    printf("%s\n",aux1);
+                                }
+                                else
+                                {
+                                    if(strlen(aux1) + strlen(au->codigo) + strlen(sobra) < 10)
+                                    {
+                                        char codigoAU[9];
+                                        strcpy(codigoAU,au->codigo);
+                                        strcat(sobra,aux1);
+                                        strcat(sobra,codigoAU);
+                                        printf("%s\n",sobra);
+                                    }
+                                    else
+                                    {
+                                        if(strlen(aux1) + strlen(sobra) < 10)
+                                        {
+                                            strcat(aux1,sobra);
+                                            printf("%s\n",aux1);
+                                        }
+                                        else
+                                        {
+                                            char codigoAU[9];
+                                            char OlhaAGambiBrasil[9];
+                                            char jaAcabou = 0;
+                                            char emQualAcabou = 0;
+
+                                            strcpy(codigoAU,au->codigo);
+
+
+                                            for(int i = 0; i < 10; i++)
+                                            {
+                                                if(!jaAcabou)
+                                                {
+                                                    OlhaAGambiBrasil[i] = codigoAU[i];
+                                                    if(codigoAU[i] == '\0')
+                                                    {
+                                                        jaAcabou = 1;
+                                                        emQualAcabou = i;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sobra[i - emQualAcabou] = codigoAU[i];
+
+                                                }
+                                            }
+
+                                            strcat(aux1,OlhaAGambiBrasil);
+                                            temSobra = 1;
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            else
+                            {
+                                char codigoAU[9];
+                                strcpy(codigoAU,au->codigo);
+
+                                char OlhaAGambiBrasil[9];
+                                char jaAcabou = 0;
+                                char emQualAcabou = 0;
+
+                                for(int i = 0; i < 10; i++)
+                                {
+                                    if(!jaAcabou)
+                                    {
+                                        OlhaAGambiBrasil[i] = codigoAU[i];
+                                        if(codigoAU[i] == '\0')
+                                        {
+                                            jaAcabou = 1;
+                                            emQualAcabou = i;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sobra[i - emQualAcabou] = codigoAU[i];
+
+                                    }
+                                }
+
+                                strcat(aux1,OlhaAGambiBrasil);
+                                temSobra = 1;
+                            }
+                        }
+                    auxiliar = auxiliar->prox;
+                    }
+                }
+                else
+                    puts("let it go"); /*Deu ruim brasil*/
+
+                }
+
+            }
+
+        puts(nomeArquivoAlula);
         fclose(arqSaida);
         fclose(arqEntrada);
     }

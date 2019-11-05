@@ -175,7 +175,104 @@ void compactar()
             puts("Esse arquivo nao pode ser criado!");
         else
         {
+            unsigned char numeroMagico = 0;
+            char stringGrande[65];
+            char codigo[9];
+            char i = 0;
+            char qtdSG = 0;
+            char tamanhoSG = 0;
+            char temSobra = 0;
+            char lixo = 0;
+            int auxChar = 0;
+
+            /*Tamanho do int -> 4 bytes*/
+            fputc('\0', arqSaida);
+            fputc('\0', arqSaida);
+            fputc('\0', arqSaida);
+            fputc('\0', arqSaida);
+
+            /*Tamnaho do char -> 1 byte*/
+            fputc('\0', arqSaida);
+
             while(!feof(arqEntrada))
+            {
+                No* auxiliar = lista->inicio;
+
+                for(i = 0 ; i < 8; i++)
+                {
+                    if((auxChar = getc(arqEntrada)) >= 0 )
+                    {
+                        while(auxiliar != NULL)
+                        {
+                            CharCompacto *au = (CharCompacto*)auxiliar->info;
+                            if(au->character == auxChar)
+                                strcpy(codigo,au->codigo);
+                        }
+                        if(temSobra)
+                        {
+                            for(char j = 0; j < tamanhoSG; j++)
+                            {
+                                stringGrande[j] = stringGrande[qtdSG];
+                                stringGrande[qtdSG++] = '\0';
+                            }
+                            qtdSG = tamanhoSG;
+                        }
+
+                        for(int a = 0; a < strlen(codigo); a++)
+                        {
+                            stringGrande[qtdSG++] = codigo[a];
+                            codigo[a] = '\0';
+                        }
+                    }
+                    else
+                    {
+                        tamanhoSG = strlen(stringGrande);
+                        lixo = tamanhoSG - qtdChars;
+                        numeroMagico = 0;
+                        for(char k = 0 ; k < lixo; k++)
+                        {
+                            if(stringGrande[qtdSG++] == 1)
+                                numeroMagico += pow(2, 7 - k);
+                        }
+                        lixo = 8 - lixo;
+
+                        fputc(numeroMagico, arqSaida);
+                    }
+
+                }
+
+                i = 0;
+                qtdSG = 0;
+                tamanhoSG = strlen(stringGrande);
+
+                while(strlen(stringGrande) >= 8)
+                {
+                    codigo[i++] = stringGrande[qtdSG];
+                    stringGrande[qtdSG++] = '\0';
+                    tamanhoSG--;
+
+                    if(i == 8)
+                    {
+                        numeroMagico = 0;
+                        for(i = 0 ; i < 8; i++)
+                        {
+                            if(codigo[i] == 1)
+                                numeroMagico += pow(2, 7 - i);
+                        }
+
+                        i = 0;
+                        fputc(numeroMagico, arqSaida);
+                    }
+                }
+                if(tamanhoSG)
+                    temSobra = 1;
+            }
+            rewind(arqSaida);
+
+            fprintf(arqSaida, "%d", qtdChars);
+            fprintf(arqSaida, "%c", lixo);
+
+            /*while(!feof(arqEntrada))
             {
                 char aux1[9];
                 char aux2[9];
@@ -290,15 +387,18 @@ void compactar()
                     }
                 }
                 else
-                    puts("let it go"); /*Deu ruim brasil*/
+                    puts("let it go");
+
 
                 }
 
-            }
+            }*/
+            /*Deu ruim brasil*/
 
         puts(nomeArquivoAlula);
         fclose(arqSaida);
         fclose(arqEntrada);
+        }
     }
 
     system("PAUSE");

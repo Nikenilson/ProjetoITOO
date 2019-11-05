@@ -207,6 +207,7 @@ void compactar()
                             CharCompacto *au = (CharCompacto*)auxiliar->info;
                             if(au->character == auxChar)
                                 strcpy(codigo,au->codigo);
+                            auxiliar = auxiliar->prox;
                         }
                         if(temSobra)
                         {
@@ -237,6 +238,7 @@ void compactar()
                         lixo = 8 - lixo;
 
                         fputc(numeroMagico, arqSaida);
+
                     }
 
                 }
@@ -257,7 +259,7 @@ void compactar()
                         for(i = 0 ; i < 8; i++)
                         {
                             if(codigo[i] == 1)
-                                numeroMagico += pow(2, 7 - i);
+                                numeroMagico += pow(2.0, 7 - i);/*pow*/
                         }
 
                         i = 0;

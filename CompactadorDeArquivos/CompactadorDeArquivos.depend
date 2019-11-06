@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1573046209 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
+1573051401 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

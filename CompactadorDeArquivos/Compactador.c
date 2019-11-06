@@ -60,7 +60,7 @@ void printarArquivo(char* c, FILE *f)
     unsigned char b = 0;
     for(int i = 0; i < 9; i++)
     {
-        if(c[i] == 1)
+        if(c[i] == '1')
             setBit(i, b);
     }
     fputc(b, f);
@@ -146,6 +146,14 @@ void compactar()
         No* inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
         atual = inicial;
 
+        while(atual != NULL)
+        {
+            CharCompacto *aux = (CharCompacto*)atual->info;
+            printf("%c : %s\n",aux->character, aux->codigo);
+            atual = atual->prox;
+        }
+        puts("alula 3");
+
         strcpy(nomeArquivoAlula, &nomeArquivo);
         for(int j = 50; nomeArquivoAlula[j] != '.'; j--)
             nomeArquivoAlula[j] = '\0';
@@ -172,43 +180,35 @@ void compactar()
             /*Tamanho do char -> 1 byte*/
             fputc('\0', arqSaida);
 
-            while(!feof(arqEntrada))
+            auxChar = getc(arqEntrada);
+            while(auxChar != EOF)
             {
                 No* auxiliar = inicial;
-                if((auxChar = getc(arqEntrada)) >= 0)
+                if(auxChar >= 0)
                 {
                     while(auxiliar != NULL)
                     {
-                        au = (CharCompacto*)auxiliar->info;
+                        au = (CharCompacto*) auxiliar->info;
                         if(au->character == auxChar)
                         {
-                            char tamanhoCodigoAu = 0;
                             for (int c = 0; c < strlen(au->codigo); c++)
                             {
                                 codigo[tamanhoCodigo++] = au->codigo[c];
-                                tamanhoCodigoAu++;
                                 if (tamanhoCodigo == 8)
                                 {
-                                    printarArquivo(codigo,arqSaida);
-                                    limparVetorChar(codigo ,9);
+                                    printarArquivo(codigo, arqSaida);
+                                    limparVetorChar(codigo, 9);
                                     tamanhoCodigo = 0;
                                 }
-
-                                if(strlen(au->codigo - tamanhoCodigoAu) > 0)
-                                   for(int g = tamanhoCodigoAu; g < strlen(au->codigo);g++)
-                                    {
-                                    codigo[tamanhoCodigo++] = au->codigo[tamanhoCodigoAu++];
-                                    }
-
-
                             }
                         }
                         auxiliar = auxiliar->prox;
                     }
                     if(codigo)
-                        printarArquivo(codigo,arqSaida);
+                        printarArquivo(codigo, arqSaida);
                     lixo = 8 - tamanhoCodigo;
                 }
+                auxChar = getc(arqEntrada);
             }
 
             rewind(arqSaida);

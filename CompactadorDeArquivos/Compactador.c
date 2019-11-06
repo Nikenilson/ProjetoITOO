@@ -48,6 +48,35 @@ int comparaHuffNode (void * a, void * b)
    return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
 }
 
+void setBit(unsigned char qual_bit, unsigned char* valor)
+{
+    unsigned int bit_desejado = 1;
+    bit_desejado <<= qual_bit;
+    *valor = *valor | bit_desejado;
+}
+
+void printarArquivo(char* c, FILE *f)
+{
+    unsigned char b = 0;
+    for(int i = 0; i < 9; i++)
+    {
+        if(c[i] == 1)
+            setBit(i, b);
+    }
+    fputc(b, f);
+    fflush(f);
+}
+
+void limparVetorChar(char *v, int t)
+{
+    for(int i = 0; i < t; i++)
+    {
+        v[i] = '\0';
+    }
+
+}
+
+
 void compactar()
 {
     clearScreen();
@@ -107,30 +136,15 @@ void compactar()
 
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
-        puts("alula 1");
 
-        for(int i = 0; i < 10; i++)
-        {
-            codigo[i] = NULL;
-        }
+        limparVetorChar(codigo, 9);
 
         inicieArvore(&arvore);
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
 
-        puts("alula 2");
-
         inicieLista(&lista);
         No* inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
         atual = inicial;
-
-        while(atual != NULL)
-        {
-            CharCompacto *aux = (CharCompacto*)atual->info;
-            printf("%c : %s\n",aux->character, aux->codigo);
-            atual = atual->prox;
-        }
-
-        puts("alula 3");
 
         strcpy(nomeArquivoAlula, &nomeArquivo);
         for(int j = 50; nomeArquivoAlula[j] != '.'; j--)
@@ -142,16 +156,12 @@ void compactar()
             puts("Esse arquivo nao pode ser criado!");
         else
         {
-            unsigned char numeroMagico = 0;
-            char stringGrande[256];
-            char codigo[9];
-            char i = 0;
-            char qtdSG = 0;
+            CharCompacto *au;
             char tamanhoCodigo = 0;
-            char tamanhoSG = 0;
-            char temSobra = 0;
             char lixo = 0;
             int auxChar = 0;
+
+            limparVetorChar(codigo, 9);
 
             /*Tamanho do int -> 4 bytes*/
             fputc('\0', arqSaida);
@@ -165,104 +175,46 @@ void compactar()
             while(!feof(arqEntrada))
             {
                 No* auxiliar = inicial;
-
-                for(i = 0 ; i < 8; i++)
+                if((auxChar = getc(arqEntrada)) >= 0)
                 {
-                    if((auxChar = getc(arqEntrada)) >= 0)
+                    while(auxiliar != NULL)
                     {
-                        CharCompacto *au;
-                        while(auxiliar != NULL)
+                        au = (CharCompacto*)auxiliar->info;
+                        if(au->character == auxChar)
                         {
-                            au = (CharCompacto*)auxiliar->info;
-                            if(au->character == auxChar)
+                            char tamanhoCodigoAu = 0;
+                            for (int c = 0; c < strlen(au->codigo); c++)
                             {
-                                for (int c = 0; c < strlen(au->codigo); c++)
+                                codigo[tamanhoCodigo++] = au->codigo[c];
+                                tamanhoCodigoAu++;
+                                if (tamanhoCodigo == 8)
                                 {
-                                    codigo[tamanhoCodigo] = au->codigo[c];
-                                    tamanhoCodigo++;
-                                    if (tamanhoCodigo == 8)
-                                    {
-                                        temSobra = 1;
-                                    }
+                                    printarArquivo(codigo,arqSaida);
+                                    limparVetorChar(codigo ,9);
+                                    tamanhoCodigo = 0;
                                 }
+
+                                if(strlen(au->codigo - tamanhoCodigoAu) > 0)
+                                   for(int g = tamanhoCodigoAu; g < strlen(au->codigo);g++)
+                                    {
+                                    codigo[tamanhoCodigo++] = au->codigo[tamanhoCodigoAu++];
+                                    }
+
+
                             }
-                            auxiliar = auxiliar->prox;
                         }
-
-
-                        if(temSobra)
-                        {
-                            for(char j = 0; j < tamanhoSG; j++)
-                            {
-                                stringGrande[j] = stringGrande[qtdSG];
-                                stringGrande[qtdSG++] = '\0';
-                            }
-                            qtdSG = tamanhoSG;
-                        }
-
-                        for(int a = 0; a < strlen(codigo); a++)
-                        {
-                            stringGrande[qtdSG++] = codigo[a];
-                            codigo[a] = '\0';
-                            tamanhoCodigo--;
-                        }
+                        auxiliar = auxiliar->prox;
                     }
-                    else
-                    {
-                        tamanhoSG = strlen(stringGrande);
-                        lixo = tamanhoSG - qtdChars;
-                        numeroMagico = 0;
-                        for(char k = 0 ; k < lixo; k++)
-                        {
-                            if(stringGrande[qtdSG++] == 1)
-                            {
-                                unsigned int bit_desejado = 1;
-                                bit_desejado <<= qtdSG;
-                                numeroMagico = numeroMagico | bit_desejado;
-
-                            }
-
-                        }
-                        lixo = 8 - lixo;
-
-                        fputc(numeroMagico, arqSaida);
-
-                    }
-
+                    if(codigo)
+                        printarArquivo(codigo,arqSaida);
+                    lixo = 8 - tamanhoCodigo;
                 }
-
-                i = 0;
-                qtdSG = 0;
-                tamanhoSG = strlen(stringGrande);
-
-                while(strlen(stringGrande) >= 8)
-                {
-                    codigo[i++] = stringGrande[qtdSG];
-                    stringGrande[qtdSG++] = '\0';
-                    tamanhoSG--;
-
-                    if(i == 8)
-                    {
-                        numeroMagico = 0;
-                        for(i = 0 ; i < 8; i++)
-                        {
-                            if(codigo[i] == 1)
-                            {
-
-                            }
-                        }
-
-                        i = 0;
-                        fputc(numeroMagico, arqSaida);
-                    }
-                }
-                if(tamanhoSG)
-                    temSobra = 1;
             }
+
             rewind(arqSaida);
 
             fprintf(arqSaida, "%d", qtdChars);
-            fprintf(arqSaida, "%d", lixo);
+            fprintf(arqSaida, "%c", lixo);
 
             puts(nomeArquivoAlula);
             fclose(arqSaida);
@@ -301,14 +253,3 @@ void clearScreen()
     system("@cls||clear");
 }
 
-void setBit(unsigned char qual_bit, unsigned int* valor)
-{
-    unsigned int bit_desejado = 1;
-    bit_desejado <<= qual_bit;
-    *valor = *valor | bit_desejado;
-}
-
-void printarArquivo(char* c, FILE *f)
-{
-
-}

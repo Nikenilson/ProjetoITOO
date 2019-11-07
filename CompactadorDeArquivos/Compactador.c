@@ -76,6 +76,16 @@ void limparVetorChar(char *v, int t)
 
 }
 
+void freeArvore(HuffNode* r)
+{
+    if(r != NULL)
+    {
+        p(r->esquerda);
+        p(r->direita);
+        free(r);
+    }
+}
+
 
 void compactar()
 {
@@ -250,20 +260,23 @@ void compactar()
 
             fprintf(arqSaida, "%c", lixo);
 
-
             /*fecha os arquivos*/
             puts(nomeArquivoAlula);
             fclose(arqSaida);
             fclose(arqEntrada);
 
-            /*da free na memoria*/
+            /*da free na memoria(Lista e CharCompacto)*/
             auxiliar = inicial;
             while(auxiliar != NULL)
             {
+                free(auxiliar->info);
                 auxiliar = auxiliar->prox;
                 free(auxiliar);
             }
             free(inicial);
+
+            /*da free na memoria(Arvore)*/
+            freeArvore(auxHuff);
         }
     }
 
@@ -323,7 +336,7 @@ void descompactar()
         fopen(nomeArquivo);
 
 
-
+        /*Le o arquivo codificado e vai descodificando e printando no novo arquivo*/
 
         fclose(arqEntrada);
         fclose(nomeArquivo);

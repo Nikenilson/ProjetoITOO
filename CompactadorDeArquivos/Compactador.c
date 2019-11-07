@@ -80,8 +80,8 @@ void freeArvore(HuffNode* r)
 {
     if(r != NULL)
     {
-        p(r->esquerda);
-        p(r->direita);
+        freeArvore(r->esquerda);
+        freeArvore(r->direita);
         free(r);
     }
 }
@@ -217,7 +217,7 @@ void compactar()
                 au = (CharCompacto*) auxiliar->info;
                 fputc(au->character, arqSaida);
                 fputc(au->codigo, arqSaida);
-                auxiliar = auxiliar->prox
+                auxiliar = auxiliar->prox;
             }
 
             /*Le o arquivo novamente e printa os codigos correspondentes aos caracteres*/
@@ -303,7 +303,7 @@ void descompactar()
     else
     {
         int qtdChars = 0;
-        char[10] extensao;
+        char extensao[10];
         char lixoMemoria;
         int auxChar = 0;
         Lista lista;
@@ -324,8 +324,8 @@ void descompactar()
         /*Reconstroe a Lista com os codigos dos chars*/
         for(int i = 0; i < qtdChars; i++)
         {
-            CharCompacto auxCompacto = novoCharCompacto(getc(arqEntrada),getc(arqEntrada))
-            insiraEmOrdem(lista, auxCompacto, comparaHuffNode());
+            /*CharCompacto auxCompacto = novoCharCompacto(getc(arqEntrada),getc(arqEntrada));
+            insiraEmOrdem(lista, auxCompacto, comparaHuffNode*);*/
         }
 
         strcpy(nomeArquivo, &nomeArquivoAlula);
@@ -333,7 +333,7 @@ void descompactar()
             nomeArquivo[j] = '\0';
         strcat(nomeArquivo, extensao);
 
-        fopen(nomeArquivo);
+        fopen(nomeArquivo, "wb");
 
 
         /*Le o arquivo codificado e vai descodificando e printando no novo arquivo*/

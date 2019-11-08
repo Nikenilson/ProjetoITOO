@@ -53,7 +53,6 @@ void setBit(unsigned char* bits, unsigned char qual)
     *bits |= (1 << qual - '0');
 }
 
-
 void printarArquivo(char* c, FILE *f)
 {
     unsigned char* b = malloc(sizeof(char));
@@ -85,7 +84,6 @@ void freeArvore(HuffNode* r)
         free(r);
     }
 }
-
 
 void compactar()
 {
@@ -215,6 +213,8 @@ void compactar()
                 fwrite(&byte2, sizeof(char), 1, arqSaida);
                 fwrite(&byte3, sizeof(char), 1, arqSaida);
                 fwrite(&byte4, sizeof(char), 1, arqSaida);
+
+                fflush(arqSaida);
 
                 auxiliar = auxiliar->prox;
             }
@@ -368,7 +368,8 @@ void descompactar()
             char aux;
             char codLido = getc(arqEntrada);
             char chegouNoLixo = 0;
-            No* auxiliar;
+            char auxLixo = 0;
+            HuffNode* atual;
 
             while(codLido != EOF)
             {
@@ -387,14 +388,15 @@ void descompactar()
 
                         if(atual->esquerda == NULL && atual->direita == NULL)
                         {
-                            fputc(atual->caracter, f);
+                            fputc(atual->caracter, arqSaida);
+                            fflush(arqSaida);
                         }
                     }
                 }
                 codLido = getc(arqEntrada);
-                if(getc(arqEntrada) == EOF)
+                if((auxLixo = getc(arqEntrada)) == EOF)
                 {
-                    ungetc(arqEntrada);
+                    ungetc(auxLixo, arqEntrada);
                     chegouNoLixo = 1;
                     break;
                 }
@@ -413,7 +415,8 @@ void descompactar()
 
                     if(atual->esquerda == NULL && atual->direita == NULL)
                     {
-                        fputc(atual->caracter, f);
+                        fputc(atual->caracter, arqSaida);
+                        fflush(arqSaida);
                     }
                 }
 

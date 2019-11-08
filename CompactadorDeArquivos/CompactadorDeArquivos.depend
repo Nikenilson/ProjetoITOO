@@ -43,13 +43,13 @@
 
 1571881265 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffnode.h
 
-1572914717 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.c
+1573180402 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
 	"CharCompacto.h"
 	"Lista.h"
 	<stdlib.h>
 
-1572914717 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.h
+1573180403 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\huffmantree.h
 	"HuffNode.h"
 	"Lista.h"
 
@@ -60,7 +60,7 @@
 
 1571880957 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\lista.h
 
-1573175188 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\compactador.c
+1573180564 source:c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

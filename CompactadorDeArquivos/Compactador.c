@@ -43,6 +43,34 @@ int main()
     return 0;
 }
 
+void printarArvore(HuffNode* r, FILE* f)
+{
+    if(r != NULL)
+    {
+        if(r->esquerda == NULL && r->direita == NULL)
+        {
+            fputc(r->caracter, f);
+
+            /*Printa frequencia*/
+            unsigned char byte1 = ( r->frequencia      & 255);
+            unsigned char byte2 = ((r->frequencia >>8) & 255);
+            unsigned char byte3 = ((r->frequencia>>16) & 255);
+            unsigned char byte4 = ((r->frequencia>>24) & 255);
+
+            fwrite(&byte1, sizeof(char), 1, f);
+            fwrite(&byte2, sizeof(char), 1, f);
+            fwrite(&byte3, sizeof(char), 1, f);
+            fwrite(&byte4, sizeof(char), 1, f);
+
+            fflush(f);
+        }
+
+        printarArvore(r->esquerda, f);
+        printarArvore(r->direita, f);
+    }
+}
+
+
 int comparaHuffNode (void * a, void * b)
 {
    return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
@@ -73,7 +101,6 @@ void limparVetorChar(char *v, int t)
     {
         v[i] = '\0';
     }
-
 }
 
 void freeArvore(HuffNode* r)
@@ -109,10 +136,7 @@ void compactar()
         int cont = 0;
         char codigo[9];
         char aux = 0;
-        unsigned char byte1;
-        unsigned char byte2;
-        unsigned char byte3;
-        unsigned char byte4;
+
 
         Fila fila;
         HuffmanTree *arvore;
@@ -199,28 +223,10 @@ void compactar()
             fprintf(arqSaida, "%c", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
-            HuffNode* auxiliar = auxHuff;
-            while(auxiliar != NULL)
-            {
-                au = (CharCompacto*) auxiliar->info;
-                fputc(au->character, arqSaida);
 
-                /*Printa frequencia*/
-                byte1 = ( au->frequencia      & 255);
-                byte2 = ((au->frequencia >>8) & 255);
-                byte3 = ((au->frequencia>>16) & 255);
-                byte4 = ((au->frequencia>>24) & 255);
+            printarArvore(auxHuff, arqSaida);
 
-                fwrite(&byte1, sizeof(char), 1, arqSaida);
-                fwrite(&byte2, sizeof(char), 1, arqSaida);
-                fwrite(&byte3, sizeof(char), 1, arqSaida);
-                fwrite(&byte4, sizeof(char), 1, arqSaida);
-
-                fflush(arqSaida);
-
-                auxiliar = auxiliar->prox;
-            }
-
+            No* auxiliar;
             /*Le o arquivo novamente e printa os codigos correspondentes aos caracteres*/
             charLido = getc(arqEntrada);
             while(charLido != EOF)
@@ -383,38 +389,38 @@ void descompactar()
             char auxLixo = 0;
             HuffNode* atual;
 
+            atual = auxHuff;
             while(codLido != EOF)
             {
-                atual = auxHuff;
-                if(codLido >= 0)
+                for (int c = 0; c < 8; c++)
                 {
-                    for (int c = 0; c < 8; c++)
-                    {
-                        aux = codLido >> 7;
-                        codLido = codLido << 1;
+                    aux = codLido >> 7;
+                    codLido = codLido << 1;
 
-                        if(atual->esquerda == NULL && atual->direita == NULL)
-                        {
-                            fputc(atual->caracter, arqSaida);
-                            fflush(arqSaida);
-                            atual = auxHuff;
-                        }
-                        else
-                        {
-                            if(aux == 1)
-                                atual = atual->direita;
-                            if(aux == 0)
-                                atual = atual->esquerda;
-                        }
+                    if(atual->esquerda == NULL && atual->direita == NULL)
+                    {
+                        fputc(atual->caracter, arqSaida);
+                        fflush(arqSaida);
+                        atual = auxHuff;
+                    }
+                    else
+                    {
+                        if(aux == 1)
+                            atual = atual->direita;
+                        if(aux == 0)
+                            atual = atual->esquerda;
                     }
                 }
                 codLido = getc(arqEntrada);
-                if((auxLixo = getc(arqEntrada)) == EOF)
+                auxLixo = getc(arqEntrada);
+                ungetc(auxLixo, arqEntrada);
+
+                if(auxLixo == EOF)
                 {
-                    ungetc(auxLixo, arqEntrada);
                     chegouNoLixo = 1;
                     break;
                 }
+
             }
             if(chegouNoLixo)
             {

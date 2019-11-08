@@ -193,3 +193,51 @@
 
 1573176534 c:\users\cliente\documents\github\projetoitoo\compactadordearquivos\charcompacto.h
 
+1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\charcompacto.c
+	<stdlib.h>
+	<string.h>
+	"CharCompacto.h"
+
+1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\charcompacto.h
+
+1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\fila.c
+	"Fila.h"
+	"Lista.h"
+	<stdlib.h>
+
+1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\fila.h
+	"Lista.h"
+
+1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\lista.h
+
+1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffmantree.c
+	"HuffmanTree.h"
+	"CharCompacto.h"
+	"Lista.h"
+	<stdlib.h>
+
+1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\huffmantree.h
+	"HuffNode.h"
+	"Lista.h"
+
+1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.h
+
+1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.c
+	<stdlib.h>
+	"HuffNode.h"
+
+1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\lista.c
+	"Lista.h"
+	"HuffNode.h"
+	<stdlib.h>
+
+1573183353 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\compactador.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Fila.h"
+	"Lista.h"
+	"HuffNode.h"
+	"HuffmanTree.h"
+	"CharCompacto.h"
+

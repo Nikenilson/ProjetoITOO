@@ -194,7 +194,7 @@ void compactar()
             fputc('\0', arqSaida);
 
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            fprintf(arqSaida, "%d", qtdChars);;
+            fprintf(arqSaida, "%c", qtdChars);;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             No* auxiliar = inicial;
@@ -260,14 +260,14 @@ void compactar()
                 charLido = getc(arqEntrada);
             }
 
-            /*Volta para o inico do aquivo para printar a quantidade de lixo de memoria*/
+            /*Volta para o inicio do aquivo para printar a quantidade de lixo de memoria*/
             rewind(arqSaida);
 
             fprintf(arqSaida, "%c", lixo);
 
             fflush(arqSaida);
 
-            printf("%s", nomeArquivo);
+            printf("%s\n", nomeArquivo);
             fflush(stdout);
 
             /*fecha os arquivos*/
@@ -332,13 +332,18 @@ void descompactar()
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        fscanf(arqEntrada, "%d", &qtdChars);
+        qtdChars = (int) getc(arqEntrada);
+
 
         caracterLido = getc(arqEntrada);
-        fscanf(arqEntrada, "%d", &frequenciaLida);
-
-        for(int i = 0; i < qtdChars; i++)
+        while (caracterLido != EOF)
+        {
+            frequenciaLida = (int) getc(arqEntrada);
             insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
+            caracterLido = getc(arqEntrada);
+        }
+        //fseek(); tem que settar a posição que começa a mensagem
+
         /*Reconstroe a arvore com os codigos dos chars*/
         while(fila.lis.qtd >= 2)
         {
@@ -360,7 +365,7 @@ void descompactar()
 
         inicieLista(&lista);
 
-        strncpy(nomeArquivo, nomeArquivo, strlen(nomeArquivo) - 4);
+        strncpy(nomeArquivo, nomeArquivoAlula, strlen(nomeArquivoAlula) - 4);
         if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
             puts("Esse arquivo nao pode ser criado!");
         else

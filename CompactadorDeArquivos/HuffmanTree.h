@@ -11,5 +11,6 @@ typedef struct
 extern void inicieArvore     (HuffmanTree *arvore);
 extern void inserirNaRaizNula(HuffmanTree *arvore, HuffNode *x);
 extern No*  percorreArvore   (HuffNode    *atual , char codigo[], int cont, Lista *lista, int (*compar)(void *, void*));
+extern int qtdFolhas (HuffNode *atual);
 
 #endif // HUFFMANTREE_H_INCLUDED

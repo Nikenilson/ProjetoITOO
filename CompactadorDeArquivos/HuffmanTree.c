@@ -35,6 +35,17 @@ No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (
     return lista->inicio;
 }
 
+int qtdFolhas(HuffNode* atual)
+{
+    if(atual == NULL)
+        return 0;
+      if(atual->esquerda == NULL && atual->direita==NULL)
+        return 1;
+      else
+        return qtdFolhas(atual->esquerda) +
+               qtdFolhas(atual->direita);
+}
+
 void inserirNaRaizNula(HuffmanTree *arvore, HuffNode *x)
 {
     if(arvore->raiz == NULL)

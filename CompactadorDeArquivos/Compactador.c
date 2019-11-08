@@ -48,19 +48,20 @@ int comparaHuffNode (void * a, void * b)
    return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
 }
 
-void setBit(unsigned char* bits, unsigned char qual)
+void setBit(unsigned char* valor, unsigned char qual_bit)
 {
-    *bits |= (1 << qual - '0');
+    unsigned int bit_desejado = 1;
+    bit_desejado <<= 7 - qual_bit;
+    *valor = *valor | bit_desejado;
 }
 
 void printarArquivo(char* c, FILE *f)
 {
-    unsigned char* b = malloc(sizeof(char));
-    *b = 0;
+    unsigned char b = 0;
     for(char i = 0; i < 9; i++)
     {
         if(c[i] == '1')
-            setBit(b, i);
+            setBit(&b, i);
     }
     fputc(b, f);
     fflush(f);
@@ -183,7 +184,7 @@ void compactar()
         else
         {
             CharCompacto *au;
-            char tamanhoCodigo = 0;
+            int tamanhoCodigo = 0;
             char lixo = 0;
             int charLido = 0;
 
@@ -194,14 +195,14 @@ void compactar()
             fputc('\0', arqSaida);
 
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            fprintf(arqSaida, "%c", qtdChars);;
+            fprintf(arqSaida, "%c", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             No* auxiliar = inicial;
             while(auxiliar != NULL)
             {
                 au = (CharCompacto*) auxiliar->info;
-                fputc(au->character, arqSaida     );
+                fputc(au->character, arqSaida);
 
                 /*Printa frequencia*/
                 byte1 = ( au->frequencia      & 255);
@@ -246,18 +247,17 @@ void compactar()
                         }
                         auxiliar = auxiliar->prox;
                     }
-                    /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
-                    if(codigo)
-                    {
-                        lixo = 8 - tamanhoCodigo;
-                        for(int i = tamanhoCodigo; i < 9; i++ )
-                            codigo[i] = '0';
-                            codigo[9] = '\0';
-                        printarArquivo(codigo, arqSaida);
-                    }
-
                 }
                 charLido = getc(arqEntrada);
+            }
+            /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
+            if(codigo)
+            {
+                lixo = 8 - tamanhoCodigo;
+                for(int i = tamanhoCodigo; i < 8; i++)
+                    codigo[i] = '0';
+                codigo[9] = '\0';
+                printarArquivo(codigo, arqSaida);
             }
 
             /*Volta para o inicio do aquivo para printar a quantidade de lixo de memoria*/
@@ -308,6 +308,7 @@ void descompactar()
     fflush(stdout);
 
     scanf("%s", &nomeArquivoAlula);
+    puts(nomeArquivoAlula);
     fflush(stdin);
 
     if((arqEntrada = fopen(nomeArquivoAlula,"rb")) == NULL)
@@ -334,15 +335,16 @@ void descompactar()
         /*Le qual sera a quantidade de chars na lista*/
         qtdChars = (int) getc(arqEntrada);
 
-
+        int cont = 0;
         caracterLido = getc(arqEntrada);
-        while (caracterLido != EOF)
+        while (cont < qtdChars)
         {
-            frequenciaLida = (int) getc(arqEntrada);
+            /*Lê um byte da frequencia*/
+            fread(&frequenciaLida, sizeof(int), 1, arqEntrada);
             insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
             caracterLido = getc(arqEntrada);
+            cont++;
         }
-        //fseek(); tem que settar a posição que começa a mensagem
 
         /*Reconstroe a arvore com os codigos dos chars*/
         while(fila.lis.qtd >= 2)
@@ -354,7 +356,7 @@ void descompactar()
             novo->esquerda = desenfileirar(&fila.lis);
             novo->direita  = desenfileirar(&fila.lis);
 
-            /*Atrinui a frequencia desse novo no como a soma da  frequencia dos nos anteriores*/
+            /*Atribui a frequencia desse novo no como a soma da  frequencia dos nos anteriores*/
             novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
 
             /*Insere o no na lista em ordem*/
@@ -365,13 +367,15 @@ void descompactar()
 
         inicieLista(&lista);
 
-        strncpy(nomeArquivo, nomeArquivoAlula, strlen(nomeArquivoAlula) - 4);
+        limparVetorChar(nomeArquivo, 50);
+        strncpy(nomeArquivo, nomeArquivoAlula, (strlen(nomeArquivoAlula) - 5));
+        puts(nomeArquivo);
         if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
             puts("Esse arquivo nao pode ser criado!");
         else
         {
             char aux;
-            char codLido = getc(arqEntrada);
+            unsigned char codLido = getc(arqEntrada);
             char chegouNoLixo = 0;
             char auxLixo = 0;
             HuffNode* atual;

@@ -5,11 +5,9 @@ typedef struct
 {
     char character;
     char codigo[9];
+    int frequencia;
 } CharCompacto;
 
-extern CharCompacto* novoCharCompacto (char c, char cod[]);
-char getCaracter(CharCompacto *c);
-char getCodigo(CharCompacto *c);
-
+extern CharCompacto* novoCharCompacto (char c, char cod[], int f);
 
 #endif // CHARCOMPACTO_H_INCLUDED

@@ -3,21 +3,12 @@
 
 #include "CharCompacto.h"
 
-CharCompacto* novoCharCompacto (char c, char cod[])
+CharCompacto* novoCharCompacto (char c, char cod[], int f)
 {
     CharCompacto* ret = (CharCompacto*) malloc(sizeof(CharCompacto));
+    ret->frequencia = f;
     ret->character = c;
     strcpy(ret->codigo, cod);
     return ret;
-}
-
-char getCaracter(CharCompacto *c)
-{
-    return c->character;
-}
-
-char getCodigo(CharCompacto *c)
-{
-    return c->codigo;
 }
 

@@ -48,20 +48,20 @@ int comparaHuffNode (void * a, void * b)
    return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
 }
 
-void setBit(unsigned char qual_bit, unsigned char* valor)
+void setBit(unsigned char* bits, unsigned char qual)
 {
-    unsigned int bit_desejado = 1;
-    bit_desejado <<= qual_bit;
-    *valor = *valor | bit_desejado;
+    *bits |= (1 << qual - '0');
 }
+
 
 void printarArquivo(char* c, FILE *f)
 {
-    unsigned char b = 0;
-    for(int i = 0; i < 9; i++)
+    unsigned char* b = malloc(sizeof(char));
+    *b = 0;
+    for(char i = 0; i < 9; i++)
     {
         if(c[i] == '1')
-            setBit(i, b);
+            setBit(b, i);
     }
     fputc(b, f);
     fflush(f);
@@ -110,12 +110,17 @@ void compactar()
         int cont = 0;
         char codigo[9];
         char aux = 0;
+        unsigned char byte1;
+        unsigned char byte2;
+        unsigned char byte3;
+        unsigned char byte4;
 
         Fila fila;
         HuffmanTree *arvore;
         HuffNode *auxHuff;
         Lista *lista;
-        No* atual;
+        No* inicial;
+        No* anteriorAuxiliar;
 
         inicieFila(&fila);
 
@@ -161,34 +166,21 @@ void compactar()
 
         limparVetorChar(codigo, 9);
         inicieArvore(&arvore);
-        inicieLista(&lista);
 
         /*AuxHuff agora eh a raiz da arvore*/
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
 
+        inicieLista(&lista);
+
         /*Percorre a arvore guardando o codigo dos caracteres em uma lista, cuja raiz eh o no inicial*/
-        No* inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
-        atual = inicial;
-
-        /*Printa os codigos*/
-        /*
-        while(atual != NULL)
-        {
-            CharCompacto *aux = (CharCompacto*)atual->info;
-            printf("%c : %s\n",aux->character, aux->codigo);
-            atual = atual->prox;
-        }*/
-
+        inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
 
         /*Pega o nome do arquivo e troca a extensao para .alula*/
-        strcpy(nomeArquivoAlula, &nomeArquivo);
-        for(int j = 50; nomeArquivoAlula[j] != '.'; j--)
-            nomeArquivoAlula[j] = '\0';
-        strcat(nomeArquivoAlula, "alula");
+        strcat(nomeArquivo, "alula");
 
         /*Cria o arquivo de saida*/
         FILE *arqSaida;
-        if((arqSaida = fopen(nomeArquivoAlula, "wb")) == NULL)
+        if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
             puts("Esse arquivo nao pode ser criado!");
         else
         {
@@ -206,17 +198,24 @@ void compactar()
             /*Printa a quantidade de caracteres que o arquivo tem*/
             fprintf(arqSaida, "%d", qtdChars);;
 
-            /*em teoria aqui tinha que ter isso*/
-            /*fprintf(extensao, "%s", qtdChars);*/
-            /*Mas n sei como fazer*/
-
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             No* auxiliar = inicial;
             while(auxiliar != NULL)
             {
                 au = (CharCompacto*) auxiliar->info;
-                fputc(au->character, arqSaida);
-                fputc(au->codigo, arqSaida);
+                fputc(au->character, arqSaida     );
+
+                /*Printa frequencia*/
+                byte1 = ( au->frequencia      & 255);
+                byte2 = ((au->frequencia >>8) & 255);
+                byte3 = ((au->frequencia>>16) & 255);
+                byte4 = ((au->frequencia>>24) & 255);
+
+                fwrite(&byte1, sizeof(char), 1, arqSaida);
+                fwrite(&byte2, sizeof(char), 1, arqSaida);
+                fwrite(&byte3, sizeof(char), 1, arqSaida);
+                fwrite(&byte4, sizeof(char), 1, arqSaida);
+
                 auxiliar = auxiliar->prox;
             }
 
@@ -224,7 +223,7 @@ void compactar()
             charLido = getc(arqEntrada);
             while(charLido != EOF)
             {
-                No* auxiliar = inicial;
+                auxiliar = inicial;
                 if(charLido >= 0)
                 {
                     /*Percorre a lista para pegar o codigo do charLido*/
@@ -249,8 +248,14 @@ void compactar()
                     }
                     /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
                     if(codigo)
+                    {
+                        lixo = 8 - tamanhoCodigo;
+                        for(int i = tamanhoCodigo; i < 9; i++ )
+                            codigo[i] = '0';
+                            codigo[9] = '\0';
                         printarArquivo(codigo, arqSaida);
-                    lixo = 8 - tamanhoCodigo;
+                    }
+
                 }
                 charLido = getc(arqEntrada);
             }
@@ -260,8 +265,13 @@ void compactar()
 
             fprintf(arqSaida, "%c", lixo);
 
+            fflush(arqSaida);
+
+            printf("%s", nomeArquivo);
+            fflush(stdout);
+
             /*fecha os arquivos*/
-            puts(nomeArquivoAlula);
+
             fclose(arqSaida);
             fclose(arqEntrada);
 
@@ -269,9 +279,11 @@ void compactar()
             auxiliar = inicial;
             while(auxiliar != NULL)
             {
+                anteriorAuxiliar = auxiliar;
                 free(auxiliar->info);
                 auxiliar = auxiliar->prox;
-                free(auxiliar);
+                free(anteriorAuxiliar);
+
             }
             free(inicial);
 
@@ -302,39 +314,84 @@ void descompactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        int qtdChars = 0;
-        char extensao[10];
-        char lixoMemoria;
-        int auxChar = 0;
-        Lista lista;
+        char lixoMemoria   = 0;
+        char caracterLido  = 0;
+        int  qtdChars      = 0;
+        int  auxChar       = 0;
+        int  frequenciaLida= 0;
 
+        HuffNode* auxHuff;
+        Lista lista;
+        Fila fila;
+
+
+        inicieFila(&fila);
         inicieLista(&lista);
 
         /*Le qual sera a quantidade de lixo de memoria no final dos codigos*/
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        fscanf(arqEntrada, "%d", qtdChars);
+        fscanf(arqEntrada, "%d", &qtdChars);
 
-        /*em teoria aqui tinha que ter isso*/
-        /*fscanf(extensao, "%s", qtdChars);*/
-        /*Mas n sei como fazer*/
+        caracterLido = getc(arqEntrada);
+        fscanf(arqEntrada, "%d", &frequenciaLida);
 
-
-        /*Reconstroe a Lista com os codigos dos chars*/
         for(int i = 0; i < qtdChars; i++)
+            insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
+        /*Reconstroe a arvore com os codigos dos chars*/
+        while(fila.lis.qtd >= 2)
         {
-            /*CharCompacto auxCompacto = novoCharCompacto(getc(arqEntrada),getc(arqEntrada));
-            insiraEmOrdem(lista, auxCompacto, comparaHuffNode*);*/
+            /*Cria um novo no*/
+            HuffNode* novo = novoHuffNode(-1,0);
+
+            /*Desenfileira dois nos, para a esquerda e para a direita do novo no*/
+            novo->esquerda = desenfileirar(&fila.lis);
+            novo->direita  = desenfileirar(&fila.lis);
+
+            /*Atrinui a frequencia desse novo no como a soma da  frequencia dos nos anteriores*/
+            novo->frequencia = novo->esquerda->frequencia + novo->direita->frequencia;
+
+            /*Insere o no na lista em ordem*/
+            insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
 
-        strcpy(nomeArquivo, &nomeArquivoAlula);
-        for(int j = 50; nomeArquivo[j] != '.'; j--)
-            nomeArquivo[j] = '\0';
-        strcat(nomeArquivo, extensao);
+        auxHuff = (HuffNode*) desenfileirar(&fila.lis);
 
-        fopen(nomeArquivo, "wb");
+        inicieLista(&lista);
 
+        /*Percorre a arvore guardando o codigo dos caracteres em uma lista, cuja raiz eh o no inicial*/
+        No* inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
+
+        strncpy(nomeArquivo, nomeArquivo, strlen(nomeArquivo) - 4);
+        if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
+            puts("Esse arquivo nao pode ser criado!");
+        else
+        {
+            char codLido = getc(arqEntrada);
+            No* auxiliar;
+
+            while(codLido != EOF)
+            {
+                auxiliar = inicial;
+                if(codLido >= 0)
+                {
+                    /*Percorre a lista para pegar o char do codLido*/
+                    while(auxiliar != NULL)
+                    {
+                        au = (CharCompacto*) auxiliar->info;
+                        if(au->character == codLido)
+                        {
+
+
+                        }
+                        auxiliar = auxiliar->prox;
+                    }
+                    /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
+
+                }
+                codLido = getc(arqEntrada);
+        }
 
         /*Le o arquivo codificado e vai descodificando e printando no novo arquivo*/
 

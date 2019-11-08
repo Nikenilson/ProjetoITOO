@@ -21,7 +21,7 @@ No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (
 
         if(atual->esquerda == NULL && atual->direita == NULL)
         {
-            insiraEmOrdem(lista, novoCharCompacto(atual->caracter, codigo), compar);
+            insiraEmOrdem(lista, novoCharCompacto(atual->caracter, codigo, atual->frequencia), compar);
             codigo[cont - 1] = '\0';
         }
 

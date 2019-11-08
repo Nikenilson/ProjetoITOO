@@ -416,6 +416,10 @@ void descompactar()
                 }
                 codLido = getc(arqEntrada);
                 auxLixo = getc(arqEntrada);
+                ungetc(auxLixo, arqEntrada);
+
+                if(chegouNoLixo)
+                    break;
 
                 if(auxLixo == EOF)
                    chegouNoLixo = 1;

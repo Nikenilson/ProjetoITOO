@@ -168,6 +168,7 @@ void compactar()
 
         /*AuxHuff agora eh a raiz da arvore*/
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
+        p(auxHuff);
 
         inicieLista(&lista);
 
@@ -198,7 +199,7 @@ void compactar()
             fprintf(arqSaida, "%c", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
-            No* auxiliar = inicial;
+            HuffNode* auxiliar = auxHuff;
             while(auxiliar != NULL)
             {
                 au = (CharCompacto*) auxiliar->info;
@@ -336,13 +337,13 @@ void descompactar()
         qtdChars = (int) getc(arqEntrada);
 
         int cont = 0;
-        caracterLido = getc(arqEntrada);
+
         while (cont < qtdChars)
         {
             /*Lê um byte da frequencia*/
+            caracterLido = getc(arqEntrada);
             fread(&frequenciaLida, sizeof(int), 1, arqEntrada);
             insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
-            caracterLido = getc(arqEntrada);
             cont++;
         }
 
@@ -365,6 +366,8 @@ void descompactar()
 
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
 
+        p(auxHuff);
+
         inicieLista(&lista);
 
         limparVetorChar(nomeArquivo, 50);
@@ -374,7 +377,7 @@ void descompactar()
             puts("Esse arquivo nao pode ser criado!");
         else
         {
-            char aux;
+            char aux = 0;
             unsigned char codLido = getc(arqEntrada);
             char chegouNoLixo = 0;
             char auxLixo = 0;
@@ -390,15 +393,18 @@ void descompactar()
                         aux = codLido >> 7;
                         codLido = codLido << 1;
 
-                        if(codLido == 1)
-                            atual = atual->direita;
-                        if(codLido == 0)
-                            atual = atual->esquerda;
-
                         if(atual->esquerda == NULL && atual->direita == NULL)
                         {
                             fputc(atual->caracter, arqSaida);
                             fflush(arqSaida);
+                            atual = auxHuff;
+                        }
+                        else
+                        {
+                            if(aux == 1)
+                                atual = atual->direita;
+                            if(aux == 0)
+                                atual = atual->esquerda;
                         }
                     }
                 }
@@ -417,15 +423,18 @@ void descompactar()
                     aux = codLido >> 7;
                     codLido = codLido << 1;
 
-                    if(codLido == 1)
-                        atual = atual->direita;
-                    if(codLido == 0)
-                        atual = atual->esquerda;
-
                     if(atual->esquerda == NULL && atual->direita == NULL)
                     {
                         fputc(atual->caracter, arqSaida);
                         fflush(arqSaida);
+                        atual = auxHuff;
+                    }
+                    else
+                    {
+                        if(aux == 1)
+                            atual = atual->direita;
+                        if(aux == 0)
+                            atual = atual->esquerda;
                     }
                 }
 
@@ -438,6 +447,17 @@ void descompactar()
     fclose(nomeArquivo);
 
     system("PAUSE");
+}
+
+void p(HuffNode* avere)
+{
+    if(avere != NULL)
+    {
+        p(avere->esquerda);
+        if(avere->caracter != -1)
+            printf("%c : %d\n", avere->caracter, avere->frequencia);
+        p(avere->direita);
+    }
 }
 
 void clearScreen()

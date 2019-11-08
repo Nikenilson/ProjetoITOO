@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1573214286 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
+1573216869 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\compactador.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -19,7 +19,7 @@
 	"HuffNode.h"
 	"Lista.h"
 
-1572517522 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.c
+1573216673 source:c:\users\u18180\github\projetoitoo\compactadordearquivos\lista.c
 	"Lista.h"
 	"HuffNode.h"
 	<stdlib.h>

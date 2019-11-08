@@ -86,7 +86,8 @@ void setBit(unsigned char* valor, unsigned char qual_bit)
 void printarArquivo(char* c, FILE *f)
 {
     unsigned char b = 0;
-    for(char i = 0; i < 9; i++)
+    char i;
+    for(i = 0; i < 9; i++)
     {
         if(c[i] == '1')
             setBit(&b, i);
@@ -98,9 +99,7 @@ void printarArquivo(char* c, FILE *f)
 void limparVetorChar(char *v, int t)
 {
     for(int i = 0; i < t; i++)
-    {
         v[i] = '\0';
-    }
 }
 
 void freeArvore(HuffNode* r)
@@ -148,7 +147,8 @@ void compactar()
         inicieFila(&fila);
 
         /*Inicia vetor de frequencia*/
-        for(int i = 0; i < 256; i++)
+        int i;
+        for(i = 0; i < 256; i++)
             vetorFrequencia[i] = 0;
 
         /*Conta a frequencia de cada caracter no arquivo e a quantidade de caracteres no arquivo*/
@@ -164,11 +164,9 @@ void compactar()
         rewind(arqEntrada);
 
         /*Insere os caracteres na fila de prioridades */
-        for(int i = 0; i < 256; i++)
-        {
+        for(i = 0; i < 256; i++)
             if(vetorFrequencia[i] != 0)
                 insiraEmOrdem(&fila.lis, novoHuffNode(i, vetorFrequencia[i]), comparaHuffNode);
-        }
 
         /*Enquanto tem 2 ou mais nos na fila*/
         while(fila.lis.qtd >= 2)
@@ -223,7 +221,6 @@ void compactar()
             fprintf(arqSaida, "%c", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
-
             printarArvore(auxHuff, arqSaida);
 
             No* auxiliar;
@@ -240,8 +237,10 @@ void compactar()
                         au = (CharCompacto*) auxiliar->info;
                         if(au->character == charLido)
                         {
+                            int tamanho = strlen(au->codigo);
+                            int c;
                             /*Vai adicionando os bits do codigo um por um ate que tenha suficiente(8) para printar*/
-                            for (int c = 0; c < strlen(au->codigo); c++)
+                            for (c = 0; c < tamanho; c++)
                             {
                                 codigo[tamanhoCodigo++] = au->codigo[c];
                                 if (tamanhoCodigo == 8)
@@ -389,11 +388,16 @@ void descompactar()
             char auxLixo = 0;
             HuffNode* atual;
 
+            int ultimoBit = 8 - lixoMemoria;
             atual = auxHuff;
             while(codLido != EOF)
             {
                 for (int c = 0; c < 8; c++)
                 {
+                    if (chegouNoLixo)
+                        if(c == ultimoBit)
+                            break;
+
                     aux = codLido >> 7;
                     codLido = codLido << 1;
 
@@ -403,47 +407,18 @@ void descompactar()
                         fflush(arqSaida);
                         atual = auxHuff;
                     }
-                    else
-                    {
-                        if(aux == 1)
-                            atual = atual->direita;
-                        if(aux == 0)
-                            atual = atual->esquerda;
-                    }
+
+                    if(aux == 1)
+                        atual = atual->direita;
+                    if(aux == 0)
+                        atual = atual->esquerda;
+
                 }
                 codLido = getc(arqEntrada);
                 auxLixo = getc(arqEntrada);
-                ungetc(auxLixo, arqEntrada);
 
                 if(auxLixo == EOF)
-                {
-                    chegouNoLixo = 1;
-                    break;
-                }
-
-            }
-            if(chegouNoLixo)
-            {
-                for (int c = 0; c < 8 - lixoMemoria; c++)
-                {
-                    aux = codLido >> 7;
-                    codLido = codLido << 1;
-
-                    if(atual->esquerda == NULL && atual->direita == NULL)
-                    {
-                        fputc(atual->caracter, arqSaida);
-                        fflush(arqSaida);
-                        atual = auxHuff;
-                    }
-                    else
-                    {
-                        if(aux == 1)
-                            atual = atual->direita;
-                        if(aux == 0)
-                            atual = atual->esquerda;
-                    }
-                }
-
+                   chegouNoLixo = 1;
             }
         }
 

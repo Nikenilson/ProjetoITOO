@@ -360,44 +360,70 @@ void descompactar()
 
         inicieLista(&lista);
 
-        /*Percorre a arvore guardando o codigo dos caracteres em uma lista, cuja raiz eh o no inicial*/
-        No* inicial = percorreArvore(auxHuff, codigo, cont, &lista, comparaHuffNode);
-
         strncpy(nomeArquivo, nomeArquivo, strlen(nomeArquivo) - 4);
         if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
             puts("Esse arquivo nao pode ser criado!");
         else
         {
+            char aux;
             char codLido = getc(arqEntrada);
+            char chegouNoLixo = 0;
             No* auxiliar;
 
             while(codLido != EOF)
             {
-                auxiliar = inicial;
+                atual = auxHuff;
                 if(codLido >= 0)
                 {
-                    /*Percorre a lista para pegar o char do codLido*/
-                    while(auxiliar != NULL)
+                    for (int c = 0; c < 8; c++)
                     {
-                        au = (CharCompacto*) auxiliar->info;
-                        if(au->character == codLido)
+                        aux = codLido >> 7;
+                        codLido = codLido << 1;
+
+                        if(codLido == 1)
+                            atual = atual->direita;
+                        if(codLido == 0)
+                            atual = atual->esquerda;
+
+                        if(atual->esquerda == NULL && atual->direita == NULL)
                         {
-
-
+                            fputc(atual->caracter, f);
                         }
-                        auxiliar = auxiliar->prox;
                     }
-                    /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
-
                 }
                 codLido = getc(arqEntrada);
+                if(getc(arqEntrada) == EOF)
+                {
+                    ungetc(arqEntrada);
+                    chegouNoLixo = 1;
+                    break;
+                }
+            }
+            if(chegouNoLixo)
+            {
+                for (int c = 0; c < 8 - lixoMemoria; c++)
+                {
+                    aux = codLido >> 7;
+                    codLido = codLido << 1;
+
+                    if(codLido == 1)
+                        atual = atual->direita;
+                    if(codLido == 0)
+                        atual = atual->esquerda;
+
+                    if(atual->esquerda == NULL && atual->direita == NULL)
+                    {
+                        fputc(atual->caracter, f);
+                    }
+                }
+
+            }
         }
 
-        /*Le o arquivo codificado e vai descodificando e printando no novo arquivo*/
-
-        fclose(arqEntrada);
-        fclose(nomeArquivo);
     }
+
+    fclose(arqEntrada);
+    fclose(nomeArquivo);
 
     system("PAUSE");
 }

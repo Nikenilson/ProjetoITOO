@@ -35,7 +35,7 @@ No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (
     return lista->inicio;
 }
 
-int qtdFolhas(HuffNode* atual)
+short int qtdFolhas(HuffNode* atual)
 {
     if(atual == NULL)
         return 0;

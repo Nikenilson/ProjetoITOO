@@ -134,8 +134,7 @@ void compactar()
         int qtdChars = 0;
         int cont = 0;
         char codigo[9];
-        char aux = 0;
-
+        int aux = 0;
 
         Fila fila;
         HuffmanTree *arvore;
@@ -190,7 +189,6 @@ void compactar()
 
         /*AuxHuff agora eh a raiz da arvore*/
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
-        p(auxHuff);
 
         inicieLista(&lista);
 
@@ -208,7 +206,7 @@ void compactar()
         {
             CharCompacto *au;
             int tamanhoCodigo = 0;
-            char lixo = 0;
+            int lixo = 0;
             int charLido = 0;
 
             limparVetorChar(codigo, 9);
@@ -218,7 +216,7 @@ void compactar()
             fputc('\0', arqSaida);
 
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            fprintf(arqSaida, "%c", qtdFolhas(auxHuff));;
+            fprintf(arqSaida, "%hi", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             printarArvore(auxHuff, arqSaida);
@@ -321,16 +319,15 @@ void descompactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        char lixoMemoria   = 0;
-        char caracterLido  = 0;
-        int  qtdChars      = 0;
-        int  auxChar       = 0;
-        int  frequenciaLida= 0;
+        char lixoMemoria    = 0;
+        int  caracterLido   = 0;
+        int  qtdChars       = 0;
+        int  auxChar        = 0;
+        int  frequenciaLida = 0;
 
         HuffNode* auxHuff;
         Lista lista;
         Fila fila;
-
 
         inicieFila(&fila);
         inicieLista(&lista);
@@ -339,7 +336,7 @@ void descompactar()
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        qtdChars = (int) getc(arqEntrada);
+        fscanf(arqEntrada, "%hi", &qtdChars);
 
         int cont = 0;
 
@@ -369,9 +366,8 @@ void descompactar()
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
 
+        puts("aqui");
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
-
-        p(auxHuff);
 
         inicieLista(&lista);
 

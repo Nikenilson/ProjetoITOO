@@ -49,11 +49,18 @@ void printarArvore(HuffNode* r, FILE* f)
     {
         if(r->esquerda == NULL && r->direita == NULL)
         {
-            /*Printa caracter*/
             fputc(r->caracter, f);
 
             /*Printa frequencia*/
-            fwrite(&r->frequencia, sizeof(int), 1, f);
+            unsigned char byte1 = ( r->frequencia      & 255);
+            unsigned char byte2 = ((r->frequencia >>8) & 255);
+            unsigned char byte3 = ((r->frequencia>>16) & 255);
+            unsigned char byte4 = ((r->frequencia>>24) & 255);
+
+            fwrite(&byte1, sizeof(char), 1, f);
+            fwrite(&byte2, sizeof(char), 1, f);
+            fwrite(&byte3, sizeof(char), 1, f);
+            fwrite(&byte4, sizeof(char), 1, f);
 
             fflush(f);
         }
@@ -148,6 +155,7 @@ void compactar()
         while(aux != EOF)
         {
             vetorFrequencia[aux]++;
+            qtdChars++;
             aux = getc(arqEntrada);
         }
 
@@ -210,8 +218,7 @@ void compactar()
             fputc('\0', arqSaida);
 
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            qtdChars = qtdFolhas(auxHuff);
-            fwrite(&qtdChars, sizeof(short int), 1, arqSaida);;
+            fprintf(arqSaida, "%hi", qtdFolhas(auxHuff));;
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             printarArvore(auxHuff, arqSaida);
@@ -331,7 +338,7 @@ void descompactar()
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        fread(&qtdChars, sizeof(short int), 1, arqEntrada);
+        fscanf(arqEntrada, "%hi", &qtdChars);
 
         int cont = 0;
 
@@ -374,14 +381,14 @@ void descompactar()
         else
         {
             char aux = 0;
-            unsigned char codLido = 0;
+            unsigned char codLido = getc(arqEntrada);
             char chegouNoLixo = 0;
             char auxLixo = 0;
             HuffNode* atual;
 
             int ultimoBit = 8 - lixoMemoria;
             atual = auxHuff;
-            while(fread(&codLido, 1, sizeof(char), arqEntrada))
+            while(codLido != EOF)
             {
                 for (int c = 0; c < 8; c++)
                 {
@@ -405,13 +412,15 @@ void descompactar()
                         atual = atual->esquerda;
 
                 }
+                codLido = getc(arqEntrada);
+                auxLixo = getc(arqEntrada);
+                ungetc(auxLixo, arqEntrada);
 
                 if(chegouNoLixo)
                     break;
 
-                if(fread(&auxLixo, 1, sizeof(char), arqEntrada))
+                if(auxLixo == EOF)
                    chegouNoLixo = 1;
-                ungetc(auxLixo, arqEntrada);
             }
         }
 

@@ -189,6 +189,8 @@ void compactar()
 
         /*AuxHuff agora eh a raiz da arvore*/
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
+        p(auxHuff);
+
 
         inicieLista(&lista);
 
@@ -320,7 +322,7 @@ void descompactar()
     else
     {
         char lixoMemoria    = 0;
-        int  caracterLido   = 0;
+        char caracterLido   = 0;
         int  qtdChars       = 0;
         int  auxChar        = 0;
         int  frequenciaLida = 0;
@@ -366,8 +368,8 @@ void descompactar()
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
 
-        puts("aqui");
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
+        p(auxHuff);
 
         inicieLista(&lista);
 

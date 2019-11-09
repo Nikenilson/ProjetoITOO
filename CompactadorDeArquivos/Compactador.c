@@ -395,7 +395,7 @@ void descompactar()
                 for (int c = 0; c < 8; c++)
                 {
                     if (chegouNoLixo)
-                        if(c == ultimoBit)
+                        if(c > ultimoBit)
                             break;
 
                     aux = codLido >> 7;
@@ -429,7 +429,7 @@ void descompactar()
     }
 
     fclose(arqEntrada);
-    fclose(nomeArquivo);
+    fclose(arqSaida);
 
     system("PAUSE");
 }

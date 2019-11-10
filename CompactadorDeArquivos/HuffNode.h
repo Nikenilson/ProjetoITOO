@@ -8,6 +8,6 @@ typedef struct HuffNode
 	struct HuffNode *esquerda, *direita;
 } HuffNode;
 
-extern HuffNode* novoHuffNode (int c, int f);
+extern HuffNode* novoHuffNode (char c, int f);
 
 #endif // HUFFMANNODE_H_INCLUDED

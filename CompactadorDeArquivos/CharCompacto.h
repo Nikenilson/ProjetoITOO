@@ -4,7 +4,7 @@
 typedef struct
 {
     char character;
-    char codigo[9];
+    char codigo[256];
     int frequencia;
 } CharCompacto;
 

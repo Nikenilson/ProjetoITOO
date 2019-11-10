@@ -51,7 +51,7 @@ void printarArvore(HuffNode* r, FILE* f)
         {
             fputc(r->caracter, f);
 
-            /*Printa frequencia*/
+            /*Printa frequencia
             unsigned char byte1 = ( r->frequencia      & 255);
             unsigned char byte2 = ((r->frequencia >>8) & 255);
             unsigned char byte3 = ((r->frequencia>>16) & 255);
@@ -60,7 +60,9 @@ void printarArvore(HuffNode* r, FILE* f)
             fwrite(&byte1, sizeof(char), 1, f);
             fwrite(&byte2, sizeof(char), 1, f);
             fwrite(&byte3, sizeof(char), 1, f);
-            fwrite(&byte4, sizeof(char), 1, f);
+            fwrite(&byte4, sizeof(char), 1, f);*/
+
+            fwrite(&r->frequencia, sizeof(int), 1, f);
 
             fflush(f);
         }
@@ -87,7 +89,7 @@ void printarArquivo(char* c, FILE *f)
 {
     unsigned char b = 0;
     char i;
-    for(i = 0; i < 9; i++)
+    for(i = 0; i < 8; i++)
     {
         if(c[i] == '1')
             setBit(&b, i);
@@ -152,7 +154,7 @@ void compactar()
 
         /*Conta a frequencia de cada caracter no arquivo e a quantidade de caracteres no arquivo*/
         aux = fgetc(arqEntrada);
-        while(aux != EOF)
+        while(!(feof(arqEntrada)))
         {
             vetorFrequencia[aux]++;
             qtdChars++;
@@ -171,7 +173,7 @@ void compactar()
         while(fila.lis.qtd >= 2)
         {
             /*Cria um novo no*/
-            HuffNode* novo = novoHuffNode(-1,0);
+            HuffNode* novo = novoHuffNode(0,0);
 
             /*Desenfileira dois nos, para a esquerda e para a direita do novo no*/
             novo->esquerda = desenfileirar(&fila.lis);
@@ -205,10 +207,10 @@ void compactar()
         else
         {
             CharCompacto *au;
-            int       tamanhoCodigo = 0;
-            int       lixo          = 0;
-            int       charLido      = 0;
-            short int qtdF          = 0;
+            int           tamanhoCodigo = 0;
+            int           lixo          = 0;
+            unsigned char charLido      = 0;
+            short int     qtdF          = 0;
 
             limparVetorChar(codigo, 9);
 
@@ -218,7 +220,7 @@ void compactar()
 
             qtdF = qtdFolhas(auxHuff);
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            fwrite(&qtdF, 1, sizeof(short int) , arqSaida);
+            fwrite(&qtdF, sizeof(short int), 1 , arqSaida);
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             printarArvore(auxHuff, arqSaida);
@@ -229,32 +231,30 @@ void compactar()
             while(!(feof(arqEntrada)))
             {
                 auxiliar = inicial;
-                if(charLido >= 0)
+                /*Percorre a lista para pegar o codigo do charLido*/
+                while(auxiliar != NULL)
                 {
-                    /*Percorre a lista para pegar o codigo do charLido*/
-                    while(auxiliar != NULL)
+                    au = (CharCompacto*) auxiliar->info;
+                    if(au->character == charLido)
                     {
-                        au = (CharCompacto*) auxiliar->info;
-                        if(au->character == charLido)
+                        int tamanho = strlen(au->codigo);
+                        int c;
+                        /*Vai adicionando os bits do codigo um por um ate que tenha suficiente(8) para printar*/
+                        for (c = 0; c < tamanho; c++)
                         {
-                            int tamanho = strlen(au->codigo);
-                            int c;
-                            /*Vai adicionando os bits do codigo um por um ate que tenha suficiente(8) para printar*/
-                            for (c = 0; c < tamanho; c++)
+                            codigo[tamanhoCodigo++] = au->codigo[c];
+                            if (tamanhoCodigo == 8)
                             {
-                                codigo[tamanhoCodigo++] = au->codigo[c];
-                                if (tamanhoCodigo == 8)
-                                {
-                                    printarArquivo(codigo, arqSaida);
-                                    limparVetorChar(codigo, 9);
-                                    tamanhoCodigo = 0;
-                                }
+                                printarArquivo(codigo, arqSaida);
+                                limparVetorChar(codigo, 9);
+                                tamanhoCodigo = 0;
                             }
                         }
-                        auxiliar = auxiliar->prox;
+                        break;
                     }
+                    auxiliar = auxiliar->prox;
                 }
-                charLido = getc(arqEntrada);
+                charLido = fgetc(arqEntrada);
             }
             /*Se ainda ha algo no codigo, printa com lixo de memoria e avisa quantos bits de lixo tem*/
             if(codigo)
@@ -338,7 +338,7 @@ void descompactar()
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        fread(&qtdChars, 1 , sizeof(short int), arqEntrada);
+        fread(&qtdChars,sizeof(short int), 1 , arqEntrada);
 
         int cont = 0;
 
@@ -346,7 +346,7 @@ void descompactar()
         {
             /*Lê um byte da frequencia*/
             caracterLido = getc(arqEntrada);
-            fread(&frequenciaLida, 1, sizeof(int), arqEntrada);
+            fread(&frequenciaLida, sizeof(int), 1 , arqEntrada);
             insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
             cont++;
         }

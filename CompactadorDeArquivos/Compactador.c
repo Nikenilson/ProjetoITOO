@@ -87,7 +87,7 @@ void printarArquivo(char* c, FILE *f)
 {
     unsigned char b = 0;
     char i;
-    for(i = 0; i < 9; i++)
+    for(i = 0; i < 8; i++)
     {
         if(c[i] == '1')
             setBit(&b, i);
@@ -131,7 +131,6 @@ void compactar()
     else
     {
         int vetorFrequencia [256];
-        int qtdChars = 0;
         int cont = 0;
         char codigo[9];
         int aux = 0;
@@ -155,7 +154,6 @@ void compactar()
         while(aux != EOF)
         {
             vetorFrequencia[aux]++;
-            qtdChars++;
             aux = getc(arqEntrada);
         }
 
@@ -208,6 +206,7 @@ void compactar()
             int tamanhoCodigo = 0;
             int lixo = 0;
             int charLido = 0;
+            short int qtdF = 0;
 
             limparVetorChar(codigo, 9);
 
@@ -215,8 +214,9 @@ void compactar()
             Tamanho do char -> 1 byte*/
             fputc('\0', arqSaida);
 
+            qtdF = qtdFolhas(auxHuff);
             /*Printa a quantidade de caracteres que o arquivo tem*/
-            fprintf(arqSaida, "%hi", qtdFolhas(auxHuff));;
+            fwrite(&qtdF, 1, sizeof(short int) , arqSaida);
 
             /*Printa a lista com os codigos no arquivo para ser lida na descompactacao*/
             printarArvore(auxHuff, arqSaida);
@@ -319,11 +319,11 @@ void descompactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        char lixoMemoria    = 0;
-        int  caracterLido   = 0;
-        int  qtdChars       = 0;
-        int  auxChar        = 0;
-        int  frequenciaLida = 0;
+        char      lixoMemoria    = 0;
+        int       caracterLido   = 0;
+        short int qtdChars       = 0;
+        int       auxChar        = 0;
+        int       frequenciaLida = 0;
 
         HuffNode* auxHuff;
         Lista lista;
@@ -336,7 +336,7 @@ void descompactar()
         lixoMemoria = getc(arqEntrada);
 
         /*Le qual sera a quantidade de chars na lista*/
-        fscanf(arqEntrada, "%hi", &qtdChars);
+        fread(&qtdChars, 1 , sizeof(short int), arqEntrada);
 
         int cont = 0;
 
@@ -344,7 +344,7 @@ void descompactar()
         {
             /*Lê um byte da frequencia*/
             caracterLido = getc(arqEntrada);
-            fread(&frequenciaLida, sizeof(int), 1, arqEntrada);
+            fread(&frequenciaLida, 1, sizeof(int), arqEntrada);
             insiraEmOrdem(&fila.lis, novoHuffNode(caracterLido, frequenciaLida), comparaHuffNode);
             cont++;
         }
@@ -378,24 +378,28 @@ void descompactar()
             puts("Esse arquivo nao pode ser criado!");
         else
         {
-            char aux = 0;
-            unsigned char codLido = getc(arqEntrada);
+            char codChar      = 0;
             char chegouNoLixo = 0;
-            char auxLixo = 0;
+            char aux          = 0;
+            int  auxLixo      = 0;
+            int  codLido      = getc(arqEntrada);
+            int  ultimoBit    = 8 - lixoMemoria;
+
             HuffNode* atual;
 
-            int ultimoBit = 8 - lixoMemoria;
+
             atual = auxHuff;
             while(codLido != EOF)
             {
+                codChar = codLido;
                 for (int c = 0; c < 8; c++)
                 {
                     if (chegouNoLixo)
                         if(c > ultimoBit)
                             break;
 
-                    aux = codLido >> 7;
-                    codLido = codLido << 1;
+                    aux = codChar & 0b10000000;
+                    codChar = codChar << 1;
 
                     if(atual->esquerda == NULL && atual->direita == NULL)
                     {
@@ -404,18 +408,15 @@ void descompactar()
                         atual = auxHuff;
                     }
 
-                    if(aux == 1)
+                    if(aux)/*1*/
                         atual = atual->direita;
-                    if(aux == 0)
+                    else/*0*/
                         atual = atual->esquerda;
 
                 }
                 codLido = getc(arqEntrada);
                 auxLixo = getc(arqEntrada);
                 ungetc(auxLixo, arqEntrada);
-
-                if(chegouNoLixo)
-                    break;
 
                 if(auxLixo == EOF)
                    chegouNoLixo = 1;

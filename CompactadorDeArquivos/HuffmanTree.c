@@ -16,6 +16,7 @@ No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (
         if(atual->esquerda != NULL)
         {
             codigo[cont] = '0';
+            codigo[cont + 1] = '\0';
             percorreArvore(atual->esquerda, codigo, cont + 1, lista, compar);
         }
 
@@ -28,6 +29,7 @@ No* percorreArvore(HuffNode *atual, char codigo[], int cont, Lista *lista, int (
         if(atual->direita != NULL)
         {
             codigo[cont] = '1';
+            codigo[cont + 1] = '\0';
             percorreArvore(atual->direita, codigo, cont + 1, lista, compar);
         }
     }

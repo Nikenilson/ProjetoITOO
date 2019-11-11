@@ -49,7 +49,7 @@ void printarArvore(HuffNode* r, FILE* f)
     {
         if(r->esquerda == NULL && r->direita == NULL)
         {
-            fputc(r->caracter, f);
+            fwrite(&r->caracter,sizeof(char), 1, f);
 
             /*Printa frequencia
             unsigned char byte1 = ( r->frequencia      & 255);
@@ -78,7 +78,7 @@ int comparaHuffNode (void * a, void * b)
    return ( ((HuffNode*)a)->frequencia - ((HuffNode*)b)->frequencia );
 }
 
-void setBit(unsigned char* valor, unsigned char qual_bit)
+void setBit(char* valor, char qual_bit)
 {
     unsigned int bit_desejado = 1;
     bit_desejado <<= 7 - qual_bit;
@@ -87,14 +87,14 @@ void setBit(unsigned char* valor, unsigned char qual_bit)
 
 void printarArquivo(char* c, FILE *f)
 {
-    unsigned char b = 0;
+    char b = 0;
     char i;
     for(i = 0; i < 8; i++)
     {
         if(c[i] == '1')
             setBit(&b, i);
     }
-    fputc(b, f);
+    fwrite(&b,sizeof(char), 1, f);
     fflush(f);
 }
 
@@ -118,8 +118,8 @@ void compactar()
 {
     clearScreen();
 
-    char nomeArquivo[50];
-    char nomeArquivoAlula[50];
+    char nomeArquivo[1024];
+    char nomeArquivoAlula[1024];
     FILE *arqEntrada;
 
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
@@ -132,11 +132,11 @@ void compactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        int vetorFrequencia [256];
-        int qtdChars = 0;
-        int cont = 0;
-        char codigo[9];
-        int aux = 0;
+        int  vetorFrequencia [256];
+        char codigo          [256];
+        int  qtdChars        =   0;
+        int  cont            =   0;
+        int  aux             =   0;
 
         Fila fila;
         HuffmanTree *arvore;
@@ -153,12 +153,10 @@ void compactar()
             vetorFrequencia[i] = 0;
 
         /*Conta a frequencia de cada caracter no arquivo e a quantidade de caracteres no arquivo*/
-        aux = fgetc(arqEntrada);
-        while(!(feof(arqEntrada)))
+        for(aux = getc(arqEntrada); aux != EOF; aux = getc(arqEntrada))
         {
             vetorFrequencia[aux]++;
             qtdChars++;
-            aux = fgetc(arqEntrada);
         }
 
         /*Retorna ao inicio do arquivo para futuras leituras*/
@@ -186,7 +184,7 @@ void compactar()
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
 
-        limparVetorChar(codigo, 9);
+        limparVetorChar(codigo, 256);
         inicieArvore(&arvore);
 
         /*AuxHuff agora eh a raiz da arvore*/
@@ -209,14 +207,16 @@ void compactar()
             CharCompacto *au;
             int           tamanhoCodigo = 0;
             int           lixo          = 0;
-            unsigned char charLido      = 0;
+            char          charLido      = 0;
             short int     qtdF          = 0;
+            char          gambi         = '\0';
 
             limparVetorChar(codigo, 9);
 
             /*Reserva lugar para printar a quantidade de lixo de memoria no final dos codigos
             Tamanho do char -> 1 byte*/
-            fputc('\0', arqSaida);
+
+            fwrite(&gambi, sizeof(char), 1, arqSaida);
 
             qtdF = qtdFolhas(auxHuff);
             /*Printa a quantidade de caracteres que o arquivo tem*/
@@ -250,7 +250,6 @@ void compactar()
                                 tamanhoCodigo = 0;
                             }
                         }
-                        break;
                     }
                     auxiliar = auxiliar->prox;
                 }
@@ -265,6 +264,8 @@ void compactar()
                 codigo[9] = '\0';
                 printarArquivo(codigo, arqSaida);
             }
+
+
 
             /*Volta para o inicio do aquivo para printar a quantidade de lixo de memoria*/
             rewind(arqSaida);
@@ -305,8 +306,8 @@ void descompactar()
 {
     clearScreen();
 
-    char nomeArquivoAlula[50];
-    char nomeArquivo[50];
+    char nomeArquivoAlula[1024];
+    char nomeArquivo[1024];
     FILE *arqEntrada;
     FILE *arqSaida;
 
@@ -321,11 +322,11 @@ void descompactar()
         puts("Esse arquivo nao existe!");
     else
     {
-        char      lixoMemoria    = 0;
-        int       caracterLido   = 0;
-        short int qtdChars       = 0;
-        int       auxChar        = 0;
-        int       frequenciaLida = 0;
+        char          lixoMemoria    = 0;
+        int           caracterLido   = 0;
+        short int     qtdChars       = 0;
+        int           auxChar        = 0;
+        int           frequenciaLida = 0;
 
         HuffNode* auxHuff;
         Lista lista;
@@ -355,7 +356,7 @@ void descompactar()
         while(fila.lis.qtd >= 2)
         {
             /*Cria um novo no*/
-            HuffNode* novo = novoHuffNode(-1,0);
+            HuffNode* novo = novoHuffNode(0,0);
 
             /*Desenfileira dois nos, para a esquerda e para a direita do novo no*/
             novo->esquerda = desenfileirar(&fila.lis);
@@ -373,25 +374,25 @@ void descompactar()
 
         inicieLista(&lista);
 
-        limparVetorChar(nomeArquivo, 50);
+        limparVetorChar(nomeArquivo, 1024);
         strncpy(nomeArquivo, nomeArquivoAlula, (strlen(nomeArquivoAlula) - 5));
         puts(nomeArquivo);
         if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
+        {
             puts("Esse arquivo nao pode ser criado!");
+        }
         else
         {
-            char codChar      = 0;
-            char chegouNoLixo = 0;
-            char aux          = 0;
-            int  auxLixo      = 0;
-            int  codLido      = getc(arqEntrada);
-            int  ultimoBit    = 8 - lixoMemoria;
+            char codChar = fgetc(arqEntrada);
+            char chegouNoLixo     = 0;
+            char aux              = 0;
+            int  auxLixo          = 0;
+            int  ultimoBit        = 8 - lixoMemoria;
             HuffNode* atual;
 
             atual = auxHuff;
             while(!(feof(arqSaida)))
             {
-                codChar = codLido;
                 for (int c = 0; c < 8; c++)
                 {
                     if (chegouNoLixo)
@@ -403,7 +404,7 @@ void descompactar()
 
                     if(atual->esquerda == NULL && atual->direita == NULL)
                     {
-                        fputc(atual->caracter, arqSaida);
+                        fwrite(&atual->caracter,sizeof(char), 1, arqSaida);
                         fflush(arqSaida);
                         atual = auxHuff;
                     }
@@ -414,7 +415,7 @@ void descompactar()
                         atual = atual->esquerda;
 
                 }
-                codLido = fgetc(arqEntrada);
+                codChar = fgetc(arqEntrada);
                 auxLixo = fgetc(arqEntrada);
                 ungetc(auxLixo, arqEntrada);
 
@@ -425,11 +426,12 @@ void descompactar()
                    chegouNoLixo = 1;
             }
         }
+        fflush(arqSaida);
+
+        fclose(arqEntrada);
+        fclose(arqSaida);
 
     }
-
-    fclose(arqEntrada);
-    fclose(arqSaida);
 
     system("PAUSE");
 }

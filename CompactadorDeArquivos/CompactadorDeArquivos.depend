@@ -198,7 +198,7 @@
 	<string.h>
 	"CharCompacto.h"
 
-1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\charcompacto.h
+1573429486 e:\projetosgustavo\projetoitoo\compactadordearquivos\charcompacto.h
 
 1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\fila.c
 	"Fila.h"
@@ -208,7 +208,7 @@
 1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\fila.h
 	"Lista.h"
 
-1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\lista.h
+1573413958 e:\projetosgustavo\projetoitoo\compactadordearquivos\lista.h
 
 1573267113 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
@@ -220,7 +220,7 @@
 	"HuffNode.h"
 	"Lista.h"
 
-1573181713 e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.h
+1573431862 e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.h
 
 1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.c
 	<stdlib.h>

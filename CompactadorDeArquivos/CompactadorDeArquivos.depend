@@ -210,7 +210,7 @@
 
 1573413958 e:\projetosgustavo\projetoitoo\compactadordearquivos\lista.h
 
-1573267113 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffmantree.c
+1573431862 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffmantree.c
 	"HuffmanTree.h"
 	"CharCompacto.h"
 	"Lista.h"
@@ -222,7 +222,7 @@
 
 1573431862 e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.h
 
-1573181713 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.c
+1573431862 source:e:\projetosgustavo\projetoitoo\compactadordearquivos\huffnode.c
 	<stdlib.h>
 	"HuffNode.h"
 

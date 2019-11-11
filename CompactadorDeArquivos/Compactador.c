@@ -15,7 +15,7 @@ int main()
     do
     {
         clearScreen();
-        puts("[Descompactador de Arquivos]\n");
+        puts("[CompacTOOdor]\n");
         puts("1. Compactar arquivo");
         puts("2. Descompactar arquivo");
         puts("3. Sair\n");
@@ -122,6 +122,7 @@ void compactar()
     char nomeArquivoAlula[1024];
     FILE *arqEntrada;
 
+    puts("[CompacTOOdor]\n");
     printf("%s", "Digite o nome do arquivo que sera compactado:\n" );
     fflush(stdout);
 
@@ -197,6 +198,10 @@ void compactar()
 
         /*Pega o nome do arquivo e troca a extensao para .alula*/
         strcat(nomeArquivo, "alula");
+
+        puts("\n---------------------------------");
+
+        puts("\n[CompacTOOdor]: Compactando...");
 
         /*Cria o arquivo de saida*/
         FILE *arqSaida;
@@ -274,7 +279,10 @@ void compactar()
 
             fflush(arqSaida);
 
-            printf("%s\n", nomeArquivo);
+            puts("[CompacTOOdor]: Compactado.");
+
+            puts("\n---------------------------------\n");
+
             fflush(stdout);
 
             /*fecha os arquivos*/
@@ -311,11 +319,11 @@ void descompactar()
     FILE *arqEntrada;
     FILE *arqSaida;
 
+    puts("[CompacTOOdor]\n");
     printf("%s", "Digite o nome do arquivo que sera descompactado:\n" );
     fflush(stdout);
 
     scanf("%s", &nomeArquivoAlula);
-    puts(nomeArquivoAlula);
     fflush(stdin);
 
     if((arqEntrada = fopen(nomeArquivoAlula,"rb")) == NULL)
@@ -369,14 +377,17 @@ void descompactar()
             insiraEmOrdem(&fila.lis, novo, comparaHuffNode);
         }
 
-        puts("aqui");
         auxHuff = (HuffNode*) desenfileirar(&fila.lis);
 
         inicieLista(&lista);
 
         limparVetorChar(nomeArquivo, 1024);
         strncpy(nomeArquivo, nomeArquivoAlula, (strlen(nomeArquivoAlula) - 5));
-        puts(nomeArquivo);
+
+        puts("\n---------------------------------");
+
+        puts("\n[CompacTOOdor]: Descompactando...");
+
         if((arqSaida = fopen(nomeArquivo, "wb")) == NULL)
         {
             puts("Esse arquivo nao pode ser criado!");
@@ -427,6 +438,9 @@ void descompactar()
             }
         }
         fflush(arqSaida);
+
+        puts("[CompacTOOdor]: Descompactado.");
+        puts("\n---------------------------------\n");
 
         fclose(arqEntrada);
         fclose(arqSaida);
